@@ -1,0 +1,369 @@
+#compdef cave-activity-feed cave-arr cave-arr-backlog cave-arr-blocklist cave-arr-clear-blocklist cave-arr-import cave-arr-import-all cave-arr-import-candidates cave-arr-import-starvation cave-arr-logs cave-arr-missing-aired cave-arr-queue-errors cave-arr-recently-added cave-arr-toggle-search cave-arrival-notify cave-audit-residue cave-backlog-status cave-claude-full-backup cave-command-queue-summary cave-config-drift cave-container cave-cutoff-unmet cave-disk-config-sizes cave-disk-reclaim cave-docker-disk-usage cave-help cave-image-check cave-import-lists cave-letterboxd-history cave-letterboxd-import cave-letterboxd-track cave-letterboxd-tracked cave-letterboxd-untrack cave-log-levels cave-loop-candidates cave-loop-exclude cave-loop-unmonitor cave-maintenance-digest cave-mdblist-history cave-mdblist-import cave-mdblist-track cave-mdblist-tracked cave-mdblist-untrack cave-mount-health cave-notify-test cave-nzbdav-dedup-check cave-nzbdav-delete-failures cave-nzbdav-history cave-nzbdav-queue cave-nzbdav-stats cave-oom-check cave-perms-check cave-plex cave-plex-analyze cave-plex-automatic-updates cave-plex-backup-database cave-plex-butler cave-plex-butler-all cave-plex-clean-cache-files cave-plex-clean-log-files cave-plex-deep-media-analysis cave-plex-duplicates cave-plex-empty-trash cave-plex-garbage-collect-blobs cave-plex-garbage-collect-media cave-plex-generate-ad-markers cave-plex-generate-chapter-thumbs cave-plex-generate-credits-markers cave-plex-generate-intro-markers cave-plex-generate-media-index cave-plex-generate-voice-activity cave-plex-image-clean cave-plex-libraries cave-plex-loudness-analysis cave-plex-markers cave-plex-music-analysis cave-plex-process-assets cave-plex-recently-added cave-plex-refresh-epg cave-plex-refresh-libraries cave-plex-refresh-local-media cave-plex-sessions cave-plex-updates cave-plex-upgrade-media-analysis cave-prowlarr-indexers cave-queue-autofix cave-queue-status cave-radarr-health cave-radarr-prune cave-rating-imdb cave-rating-mdblist cave-recent cave-requests cave-resource-check cave-restart-all cave-seerr-requests cave-sonarr-fix-episode-monitoring cave-sonarr-prune cave-status cave-sys-aur-audit cave-sys-claude-home cave-sys-cron-list cave-sys-disk-free cave-sys-disk-health cave-sys-firewall-status cave-sys-flatpak-updates cave-sys-git-status-all cave-sys-journal-errors cave-sys-journal-size cave-sys-kernel-check cave-sys-mem-pressure cave-sys-pkg-clean-cache cave-sys-pkg-history cave-sys-pkg-orphans cave-sys-pkg-update cave-sys-pkg-updates cave-sys-reboot-check cave-sys-service-failed cave-sys-ssh-doctor cave-sys-timer-status cave-sys-uptime-report cave-sys-zombie-check cave-tmdb-missing cave-top cave-unwatched cave-version cave-watchable cave-worktree stack-activity-feed stack-arr stack-arr-backlog stack-arr-blocklist stack-arr-clear-blocklist stack-arr-import stack-arr-import-all stack-arr-import-candidates stack-arr-import-starvation stack-arr-logs stack-arr-missing-aired stack-arr-queue-errors stack-arr-recently-added stack-arr-toggle-search stack-arrival-notify stack-audit-residue stack-aur-audit stack-backlog-status stack-claude-full-backup stack-claude-home stack-command-queue-summary stack-config-drift stack-container stack-cron-list stack-cutoff-unmet stack-disk-config-sizes stack-disk-free stack-disk-health stack-disk-reclaim stack-docker-disk-usage stack-firewall-status stack-flatpak-updates stack-git-status-all stack-help stack-image-check stack-import-lists stack-journal-errors stack-journal-size stack-kernel-check stack-letterboxd-history stack-letterboxd-import stack-letterboxd-track stack-letterboxd-tracked stack-letterboxd-untrack stack-log-levels stack-loop-candidates stack-loop-exclude stack-loop-unmonitor stack-maintenance-digest stack-mdblist-history stack-mdblist-import stack-mdblist-track stack-mdblist-tracked stack-mdblist-untrack stack-mem-pressure stack-mount-health stack-notify-test stack-nzbdav-dedup-check stack-nzbdav-delete-failures stack-nzbdav-history stack-nzbdav-queue stack-nzbdav-stats stack-oom-check stack-perms-check stack-pkg-clean-cache stack-pkg-history stack-pkg-orphans stack-pkg-update stack-pkg-updates stack-plex stack-plex-analyze stack-plex-automatic-updates stack-plex-backup-database stack-plex-butler stack-plex-butler-all stack-plex-clean-cache-files stack-plex-clean-log-files stack-plex-deep-media-analysis stack-plex-duplicates stack-plex-empty-trash stack-plex-garbage-collect-blobs stack-plex-garbage-collect-media stack-plex-generate-ad-markers stack-plex-generate-chapter-thumbs stack-plex-generate-credits-markers stack-plex-generate-intro-markers stack-plex-generate-media-index stack-plex-generate-voice-activity stack-plex-image-clean stack-plex-libraries stack-plex-loudness-analysis stack-plex-markers stack-plex-music-analysis stack-plex-process-assets stack-plex-recently-added stack-plex-refresh-epg stack-plex-refresh-libraries stack-plex-refresh-local-media stack-plex-sessions stack-plex-updates stack-plex-upgrade-media-analysis stack-prowlarr-indexers stack-queue-autofix stack-queue-status stack-radarr-health stack-radarr-prune stack-rating-imdb stack-rating-mdblist stack-reboot-check stack-recent stack-requests stack-resource-check stack-restart-all stack-seerr-requests stack-service-failed stack-sonarr-fix-episode-monitoring stack-sonarr-prune stack-ssh-doctor stack-status stack-timer-status stack-tmdb-missing stack-top stack-unwatched stack-uptime-report stack-version stack-watchable stack-worktree stack-zombie-check
+
+# ============================================================================
+# _cave-cmd — GENERATED by gen-zsh-completions.sh — do not edit
+# ============================================================================
+# Regenerate:  zsh/scripts/gen-zsh-completions.sh
+# Verify:      zsh/scripts/gen-zsh-completions.sh --check
+# Loaded automatically by zsh/cave-scripts.zsh (fpath + compinit autoload).
+#
+# Directive groups are positional: group N completes argument N (the same
+# corrected contract as the bash completions since the 2026-09-05 fix).
+# <name> groups are dynamic sources resolved lazily.
+# ============================================================================
+
+_cave-cmd() {
+    local cur cmd pos
+    cur="${words[CURRENT]}"
+    cmd="${words[1]}"
+    pos=$((CURRENT - 2))    # 0-based arg index being completed (arg1 -> 0)
+
+    # Dynamic sources
+    local -a CONTAINERS
+    CONTAINERS=(${(f)"$(docker ps -a --format '{{.Names}}' 2>/dev/null)"})
+    local -a ARR_APPS BUTLER_TASKS
+    ARR_APPS=(radarr sonarr prowlarr)
+    BUTLER_TASKS=(clean-updates optimize-database refresh-local-media \
+        backup-database garbage-collect-blobs garbage-collect-media \
+        clean-cache-files clean-log-files process-assets generate-media-index \
+        deep-media-analysis upgrade-media-analysis music-analysis \
+        loudness-analysis generate-intro-markers generate-credits-markers \
+        generate-ad-markers generate-chapter-thumbs generate-voice-activity \
+        refresh-epg refresh-libraries automatic-updates)
+
+    case "$cmd" in
+        cave-activity-feed|stack-activity-feed)
+            return 0;
+            ;;
+        cave-arr|stack-arr)
+            if [ $pos -eq 0 ]; then compadd -- $ARR_APPS; return 0; fi
+            if [ $pos -eq 1 ]; then compadd -- rss-sync search-missing unstick unstick-importing; return 0; fi
+            return 0;
+            ;;
+        cave-arr-backlog|stack-arr-backlog)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-blocklist|stack-arr-blocklist)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-clear-blocklist|stack-arr-clear-blocklist)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-import|stack-arr-import)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-import-all|stack-arr-import-all)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-import-candidates|stack-arr-import-candidates)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-import-starvation|stack-arr-import-starvation)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-logs|stack-arr-logs)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-missing-aired|stack-arr-missing-aired)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-queue-errors|stack-arr-queue-errors)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-recently-added|stack-arr-recently-added)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-arr-toggle-search|stack-arr-toggle-search)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr all; return 0; fi
+            if [ $pos -eq 1 ]; then compadd -- on off; return 0; fi
+            return 0;
+            ;;
+        cave-arrival-notify|stack-arrival-notify)
+            compadd --  --dry-run --no-refresh --json; return 0;
+            return 0;
+            ;;
+        cave-audit-residue|stack-audit-residue)
+            ;;
+        cave-backlog-status|stack-backlog-status)
+            ;;
+        cave-claude-full-backup|stack-claude-full-backup)
+            ;;
+        cave-command-queue-summary|stack-command-queue-summary)
+            ;;
+        cave-config-drift|stack-config-drift)
+            ;;
+        cave-container|stack-container)
+            if [ $pos -eq 0 ]; then compadd -- $CONTAINERS; return 0; fi
+            if [ $pos -eq 1 ]; then compadd -- restart stop start; return 0; fi
+            return 0;
+            ;;
+        cave-cutoff-unmet|stack-cutoff-unmet)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-disk-config-sizes|stack-disk-config-sizes)
+            ;;
+        cave-disk-reclaim|stack-disk-reclaim)
+            compadd --  -y --yes --dry-run --aggressive; return 0;
+            return 0;
+            ;;
+        cave-docker-disk-usage|stack-docker-disk-usage)
+            ;;
+        cave-help|stack-help)
+            ;;
+        cave-image-check|stack-image-check)
+            ;;
+        cave-import-lists|stack-import-lists)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-letterboxd-history|stack-letterboxd-history)
+            ;;
+        cave-letterboxd-import|stack-letterboxd-import)
+            ;;
+        cave-letterboxd-track|stack-letterboxd-track)
+            ;;
+        cave-letterboxd-tracked|stack-letterboxd-tracked)
+            ;;
+        cave-letterboxd-untrack|stack-letterboxd-untrack)
+            ;;
+        cave-log-levels|stack-log-levels)
+            ;;
+        cave-loop-candidates|stack-loop-candidates)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            return 0;
+            ;;
+        cave-loop-exclude|stack-loop-exclude)
+            compadd --  -y --yes; return 0;
+            return 0;
+            ;;
+        cave-loop-unmonitor|stack-loop-unmonitor)
+            if [ $pos -eq 0 ]; then compadd -- radarr sonarr; return 0; fi
+            compadd --  -y --yes; return 0;
+            return 0;
+            ;;
+        cave-maintenance-digest|stack-maintenance-digest)
+            ;;
+        cave-mdblist-history|stack-mdblist-history)
+            ;;
+        cave-mdblist-import|stack-mdblist-import)
+            ;;
+        cave-mdblist-track|stack-mdblist-track)
+            ;;
+        cave-mdblist-tracked|stack-mdblist-tracked)
+            ;;
+        cave-mdblist-untrack|stack-mdblist-untrack)
+            ;;
+        cave-mount-health|stack-mount-health)
+            ;;
+        cave-notify-test|stack-notify-test)
+            ;;
+        cave-nzbdav-dedup-check|stack-nzbdav-dedup-check)
+            ;;
+        cave-nzbdav-delete-failures|stack-nzbdav-delete-failures)
+            compadd --  -y --yes; return 0;
+            return 0;
+            ;;
+        cave-nzbdav-history|stack-nzbdav-history)
+            ;;
+        cave-nzbdav-queue|stack-nzbdav-queue)
+            ;;
+        cave-nzbdav-stats|stack-nzbdav-stats)
+            ;;
+        cave-oom-check|stack-oom-check)
+            ;;
+        cave-perms-check|stack-perms-check)
+            ;;
+        cave-plex|stack-plex)
+            if [ $pos -eq 0 ]; then compadd -- refresh-libraries empty-trash analyze scan; return 0; fi
+            return 0;
+            ;;
+        cave-plex-analyze|stack-plex-analyze)
+            ;;
+        cave-plex-automatic-updates|stack-plex-automatic-updates)
+            ;;
+        cave-plex-backup-database|stack-plex-backup-database)
+            ;;
+        cave-plex-butler|stack-plex-butler)
+            ;;
+        cave-plex-butler-all|stack-plex-butler-all)
+            ;;
+        cave-plex-clean-cache-files|stack-plex-clean-cache-files)
+            ;;
+        cave-plex-clean-log-files|stack-plex-clean-log-files)
+            ;;
+        cave-plex-deep-media-analysis|stack-plex-deep-media-analysis)
+            ;;
+        cave-plex-duplicates|stack-plex-duplicates)
+            ;;
+        cave-plex-empty-trash|stack-plex-empty-trash)
+            ;;
+        cave-plex-garbage-collect-blobs|stack-plex-garbage-collect-blobs)
+            ;;
+        cave-plex-garbage-collect-media|stack-plex-garbage-collect-media)
+            ;;
+        cave-plex-generate-ad-markers|stack-plex-generate-ad-markers)
+            ;;
+        cave-plex-generate-chapter-thumbs|stack-plex-generate-chapter-thumbs)
+            ;;
+        cave-plex-generate-credits-markers|stack-plex-generate-credits-markers)
+            ;;
+        cave-plex-generate-intro-markers|stack-plex-generate-intro-markers)
+            ;;
+        cave-plex-generate-media-index|stack-plex-generate-media-index)
+            ;;
+        cave-plex-generate-voice-activity|stack-plex-generate-voice-activity)
+            ;;
+        cave-plex-image-clean|stack-plex-image-clean)
+            ;;
+        cave-plex-libraries|stack-plex-libraries)
+            ;;
+        cave-plex-loudness-analysis|stack-plex-loudness-analysis)
+            ;;
+        cave-plex-markers|stack-plex-markers)
+            ;;
+        cave-plex-music-analysis|stack-plex-music-analysis)
+            ;;
+        cave-plex-process-assets|stack-plex-process-assets)
+            ;;
+        cave-plex-recently-added|stack-plex-recently-added)
+            ;;
+        cave-plex-refresh-epg|stack-plex-refresh-epg)
+            ;;
+        cave-plex-refresh-libraries|stack-plex-refresh-libraries)
+            ;;
+        cave-plex-refresh-local-media|stack-plex-refresh-local-media)
+            ;;
+        cave-plex-sessions|stack-plex-sessions)
+            ;;
+        cave-plex-updates|stack-plex-updates)
+            ;;
+        cave-plex-upgrade-media-analysis|stack-plex-upgrade-media-analysis)
+            ;;
+        cave-prowlarr-indexers|stack-prowlarr-indexers)
+            ;;
+        cave-queue-autofix|stack-queue-autofix)
+            compadd --  -y --yes; return 0;
+            return 0;
+            ;;
+        cave-queue-status|stack-queue-status)
+            ;;
+        cave-radarr-health|stack-radarr-health)
+            ;;
+        cave-radarr-prune|stack-radarr-prune)
+            compadd --  -y --yes --dry-run; return 0;
+            return 0;
+            ;;
+        cave-rating-imdb|stack-rating-imdb)
+            ;;
+        cave-rating-mdblist|stack-rating-mdblist)
+            ;;
+        cave-recent|stack-recent)
+            return 0;
+            ;;
+        cave-requests|stack-requests)
+            return 0;
+            ;;
+        cave-resource-check|stack-resource-check)
+            ;;
+        cave-restart-all|stack-restart-all)
+            compadd --  -y --yes; return 0;
+            return 0;
+            ;;
+        cave-seerr-requests|stack-seerr-requests)
+            if [ $pos -eq 0 ]; then compadd -- pending approved available all; return 0; fi
+            return 0;
+            ;;
+        cave-sonarr-fix-episode-monitoring|stack-sonarr-fix-episode-monitoring)
+            ;;
+        cave-sonarr-prune|stack-sonarr-prune)
+            compadd --  -y --yes --dry-run; return 0;
+            return 0;
+            ;;
+        cave-status|stack-status)
+            ;;
+        cave-sys-aur-audit|stack-aur-audit)
+            ;;
+        cave-sys-claude-home|stack-claude-home)
+            ;;
+        cave-sys-cron-list|stack-cron-list)
+            ;;
+        cave-sys-disk-free|stack-disk-free)
+            ;;
+        cave-sys-disk-health|stack-disk-health)
+            ;;
+        cave-sys-firewall-status|stack-firewall-status)
+            ;;
+        cave-sys-flatpak-updates|stack-flatpak-updates)
+            compadd --  --apply; return 0;
+            return 0;
+            ;;
+        cave-sys-git-status-all|stack-git-status-all)
+            ;;
+        cave-sys-journal-errors|stack-journal-errors)
+            ;;
+        cave-sys-journal-size|stack-journal-size)
+            compadd --  --vacuum-size; return 0;
+            return 0;
+            ;;
+        cave-sys-kernel-check|stack-kernel-check)
+            ;;
+        cave-sys-mem-pressure|stack-mem-pressure)
+            ;;
+        cave-sys-pkg-clean-cache|stack-pkg-clean-cache)
+            if [ $pos -eq 0 ]; then compadd -- 1 2 3 5 10; return 0; fi
+            return 0;
+            ;;
+        cave-sys-pkg-history|stack-pkg-history)
+            ;;
+        cave-sys-pkg-orphans|stack-pkg-orphans)
+            compadd --  --remove; return 0;
+            return 0;
+            ;;
+        cave-sys-pkg-update|stack-pkg-update)
+            compadd --  -y --yes; return 0;
+            return 0;
+            ;;
+        cave-sys-pkg-updates|stack-pkg-updates)
+            ;;
+        cave-sys-reboot-check|stack-reboot-check)
+            ;;
+        cave-sys-service-failed|stack-service-failed)
+            ;;
+        cave-sys-ssh-doctor|stack-ssh-doctor)
+            ;;
+        cave-sys-timer-status|stack-timer-status)
+            ;;
+        cave-sys-uptime-report|stack-uptime-report)
+            ;;
+        cave-sys-zombie-check|stack-zombie-check)
+            ;;
+        cave-tmdb-missing|stack-tmdb-missing)
+            ;;
+        cave-top|stack-top)
+            ;;
+        cave-unwatched|stack-unwatched)
+            return 0;
+            ;;
+        cave-version|stack-version)
+            ;;
+        cave-watchable|stack-watchable)
+            ;;
+        cave-worktree|stack-worktree)
+            ;;
+    esac
+
+    # Unknown command (no directive branch matched) — offer command names.
+    compadd -- cave-activity-feed cave-arr cave-arr-backlog cave-arr-blocklist cave-arr-clear-blocklist cave-arr-import cave-arr-import-all cave-arr-import-candidates cave-arr-import-starvation cave-arr-logs cave-arr-missing-aired cave-arr-queue-errors cave-arr-recently-added cave-arr-toggle-search cave-arrival-notify cave-audit-residue cave-backlog-status cave-claude-full-backup cave-command-queue-summary cave-config-drift cave-container cave-cutoff-unmet cave-disk-config-sizes cave-disk-reclaim cave-docker-disk-usage cave-help cave-image-check cave-import-lists cave-letterboxd-history cave-letterboxd-import cave-letterboxd-track cave-letterboxd-tracked cave-letterboxd-untrack cave-log-levels cave-loop-candidates cave-loop-exclude cave-loop-unmonitor cave-maintenance-digest cave-mdblist-history cave-mdblist-import cave-mdblist-track cave-mdblist-tracked cave-mdblist-untrack cave-mount-health cave-notify-test cave-nzbdav-dedup-check cave-nzbdav-delete-failures cave-nzbdav-history cave-nzbdav-queue cave-nzbdav-stats cave-oom-check cave-perms-check cave-plex cave-plex-analyze cave-plex-automatic-updates cave-plex-backup-database cave-plex-butler cave-plex-butler-all cave-plex-clean-cache-files cave-plex-clean-log-files cave-plex-deep-media-analysis cave-plex-duplicates cave-plex-empty-trash cave-plex-garbage-collect-blobs cave-plex-garbage-collect-media cave-plex-generate-ad-markers cave-plex-generate-chapter-thumbs cave-plex-generate-credits-markers cave-plex-generate-intro-markers cave-plex-generate-media-index cave-plex-generate-voice-activity cave-plex-image-clean cave-plex-libraries cave-plex-loudness-analysis cave-plex-markers cave-plex-music-analysis cave-plex-process-assets cave-plex-recently-added cave-plex-refresh-epg cave-plex-refresh-libraries cave-plex-refresh-local-media cave-plex-sessions cave-plex-updates cave-plex-upgrade-media-analysis cave-prowlarr-indexers cave-queue-autofix cave-queue-status cave-radarr-health cave-radarr-prune cave-rating-imdb cave-rating-mdblist cave-recent cave-requests cave-resource-check cave-restart-all cave-seerr-requests cave-sonarr-fix-episode-monitoring cave-sonarr-prune cave-status cave-sys-aur-audit cave-sys-claude-home cave-sys-cron-list cave-sys-disk-free cave-sys-disk-health cave-sys-firewall-status cave-sys-flatpak-updates cave-sys-git-status-all cave-sys-journal-errors cave-sys-journal-size cave-sys-kernel-check cave-sys-mem-pressure cave-sys-pkg-clean-cache cave-sys-pkg-history cave-sys-pkg-orphans cave-sys-pkg-update cave-sys-pkg-updates cave-sys-reboot-check cave-sys-service-failed cave-sys-ssh-doctor cave-sys-timer-status cave-sys-uptime-report cave-sys-zombie-check cave-tmdb-missing cave-top cave-unwatched cave-version cave-watchable cave-worktree stack-activity-feed stack-arr stack-arr-backlog stack-arr-blocklist stack-arr-clear-blocklist stack-arr-import stack-arr-import-all stack-arr-import-candidates stack-arr-import-starvation stack-arr-logs stack-arr-missing-aired stack-arr-queue-errors stack-arr-recently-added stack-arr-toggle-search stack-arrival-notify stack-audit-residue stack-aur-audit stack-backlog-status stack-claude-full-backup stack-claude-home stack-command-queue-summary stack-config-drift stack-container stack-cron-list stack-cutoff-unmet stack-disk-config-sizes stack-disk-free stack-disk-health stack-disk-reclaim stack-docker-disk-usage stack-firewall-status stack-flatpak-updates stack-git-status-all stack-help stack-image-check stack-import-lists stack-journal-errors stack-journal-size stack-kernel-check stack-letterboxd-history stack-letterboxd-import stack-letterboxd-track stack-letterboxd-tracked stack-letterboxd-untrack stack-log-levels stack-loop-candidates stack-loop-exclude stack-loop-unmonitor stack-maintenance-digest stack-mdblist-history stack-mdblist-import stack-mdblist-track stack-mdblist-tracked stack-mdblist-untrack stack-mem-pressure stack-mount-health stack-notify-test stack-nzbdav-dedup-check stack-nzbdav-delete-failures stack-nzbdav-history stack-nzbdav-queue stack-nzbdav-stats stack-oom-check stack-perms-check stack-pkg-clean-cache stack-pkg-history stack-pkg-orphans stack-pkg-update stack-pkg-updates stack-plex stack-plex-analyze stack-plex-automatic-updates stack-plex-backup-database stack-plex-butler stack-plex-butler-all stack-plex-clean-cache-files stack-plex-clean-log-files stack-plex-deep-media-analysis stack-plex-duplicates stack-plex-empty-trash stack-plex-garbage-collect-blobs stack-plex-garbage-collect-media stack-plex-generate-ad-markers stack-plex-generate-chapter-thumbs stack-plex-generate-credits-markers stack-plex-generate-intro-markers stack-plex-generate-media-index stack-plex-generate-voice-activity stack-plex-image-clean stack-plex-libraries stack-plex-loudness-analysis stack-plex-markers stack-plex-music-analysis stack-plex-process-assets stack-plex-recently-added stack-plex-refresh-epg stack-plex-refresh-libraries stack-plex-refresh-local-media stack-plex-sessions stack-plex-updates stack-plex-upgrade-media-analysis stack-prowlarr-indexers stack-queue-autofix stack-queue-status stack-radarr-health stack-radarr-prune stack-rating-imdb stack-rating-mdblist stack-reboot-check stack-recent stack-requests stack-resource-check stack-restart-all stack-seerr-requests stack-service-failed stack-sonarr-fix-episode-monitoring stack-sonarr-prune stack-ssh-doctor stack-status stack-timer-status stack-tmdb-missing stack-top stack-unwatched stack-uptime-report stack-version stack-watchable stack-worktree stack-zombie-check
+}

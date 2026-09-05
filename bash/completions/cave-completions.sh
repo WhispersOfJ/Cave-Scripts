@@ -22,61 +22,60 @@ __stack_complete() {
 
     case "$cmd" in
         cave-activity-feed|stack-activity-feed)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "<limit>" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr|stack-arr)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "$ARR_APPS" -- "$cur")); return 0; fi
-            if [ $pos -eq 2 ]; then COMPREPLY=($(compgen -W "rss-sync search-missing unstick unstick-importing" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "$ARR_APPS" -- "$cur")); return 0; fi
+            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "rss-sync search-missing unstick unstick-importing" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-backlog|stack-arr-backlog)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-blocklist|stack-arr-blocklist)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-clear-blocklist|stack-arr-clear-blocklist)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-import|stack-arr-import)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-import-all|stack-arr-import-all)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-import-candidates|stack-arr-import-candidates)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-import-starvation|stack-arr-import-starvation)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-logs|stack-arr-logs)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-missing-aired|stack-arr-missing-aired)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-queue-errors|stack-arr-queue-errors)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-recently-added|stack-arr-recently-added)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arr-toggle-search|stack-arr-toggle-search)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr all" -- "$cur")); return 0; fi
-            if [ $pos -eq 2 ]; then COMPREPLY=($(compgen -W "on off" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr all" -- "$cur")); return 0; fi
+            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "on off" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-arrival-notify|stack-arrival-notify)
@@ -94,12 +93,12 @@ __stack_complete() {
         cave-config-drift|stack-config-drift)
             ;;
         cave-container|stack-container)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "$CONTAINERS" -- "$cur")); return 0; fi
-            if [ $pos -eq 2 ]; then COMPREPLY=($(compgen -W "restart stop start" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "$CONTAINERS" -- "$cur")); return 0; fi
+            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "restart stop start" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-cutoff-unmet|stack-cutoff-unmet)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-disk-config-sizes|stack-disk-config-sizes)
@@ -115,7 +114,7 @@ __stack_complete() {
         cave-image-check|stack-image-check)
             ;;
         cave-import-lists|stack-import-lists)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-letterboxd-history|stack-letterboxd-history)
@@ -131,7 +130,7 @@ __stack_complete() {
         cave-log-levels|stack-log-levels)
             ;;
         cave-loop-candidates|stack-loop-candidates)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-loop-exclude|stack-loop-exclude)
@@ -139,7 +138,7 @@ __stack_complete() {
             return 0;
             ;;
         cave-loop-unmonitor|stack-loop-unmonitor)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "radarr sonarr" -- "$cur")); return 0; fi
             COMPREPLY=($(compgen -W " -y --yes" -- "$cur")); return 0;
             return 0;
             ;;
@@ -176,7 +175,7 @@ __stack_complete() {
         cave-perms-check|stack-perms-check)
             ;;
         cave-plex|stack-plex)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "refresh-libraries empty-trash analyze scan" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "refresh-libraries empty-trash analyze scan" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-plex-analyze|stack-plex-analyze)
@@ -260,11 +259,9 @@ __stack_complete() {
         cave-rating-mdblist|stack-rating-mdblist)
             ;;
         cave-recent|stack-recent)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "<limit>" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-requests|stack-requests)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "<take>" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-resource-check|stack-resource-check)
@@ -274,7 +271,7 @@ __stack_complete() {
             return 0;
             ;;
         cave-seerr-requests|stack-seerr-requests)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "pending approved available all" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "pending approved available all" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-sonarr-fix-episode-monitoring|stack-sonarr-fix-episode-monitoring)
@@ -314,7 +311,7 @@ __stack_complete() {
         cave-sys-mem-pressure|stack-mem-pressure)
             ;;
         cave-sys-pkg-clean-cache|stack-pkg-clean-cache)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "1 2 3 5 10" -- "$cur")); return 0; fi
+            if [ $pos -eq 0 ]; then COMPREPLY=($(compgen -W "1 2 3 5 10" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-sys-pkg-history|stack-pkg-history)
@@ -346,7 +343,6 @@ __stack_complete() {
         cave-top|stack-top)
             ;;
         cave-unwatched|stack-unwatched)
-            if [ $pos -eq 1 ]; then COMPREPLY=($(compgen -W "<limit>" -- "$cur")); return 0; fi
             return 0;
             ;;
         cave-version|stack-version)

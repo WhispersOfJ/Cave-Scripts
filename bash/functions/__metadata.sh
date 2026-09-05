@@ -23,14 +23,22 @@
 # "# complete:" as the first line of the function body.
 # ============================================================================
 
+# One parser for every port. `__stack_metadata` scans whichever functions
+# directory it is pointed at, so bash/zsh/fish share this single scan
+# implementation instead of each porting its own:
+#   __stack_metadata            # default: this file's dir, *.sh (bash tree)
+#   __stack_metadata <dir> <ext>   # e.g. zsh dir + "zsh", fish dir + "fish"
+# Non-bash consumers (cave-help in zsh/fish, stack-tui, completion
+# generators) invoke this via `bash -c 'source "$1"; __stack_metadata …'`.
 __stack_metadata() {
-    local fn_dir
-    fn_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local fn_dir="${1:-}"
+    [ -n "$fn_dir" ] || fn_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local ext="${2:-sh}"
     local f
-    for f in "$fn_dir"/cave-*.sh; do
+    for f in "$fn_dir"/cave-*."$ext"; do
         [ -r "$f" ] || continue
         local category desc line
-        category="$(basename "$f" .sh)"
+        category="$(basename "$f" ".$ext")"
         desc="$(grep -m1 -o '# desc: .*' "$f" 2>/dev/null | sed 's/^# desc: //')"
         local -a lines=()
         while IFS= read -r line; do
