@@ -1,0 +1,33 @@
+name: release-please
+# Pinned actions policy: third-party actions are pinned to full commit SHAs
+# (a mutable tag could be retargeted). The trailing "# tag" marks the version.
+# To upgrade: gh api repos/{owner}/{repo}/commits/{new-tag} --jq .sha, then
+# update the SHA and the "# tag" comment on its uses: line.
+
+
+# Watches conventional-commit messages on main and maintains a standing
+# "release PR" that accumulates them into CHANGELOG.md and bumps the
+# version. Merging that PR cuts the actual GitHub Release + tag.
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5
+        with:
+          # A user PAT, not the default GITHUB_TOKEN. GitHub deliberately does
+          # not fire pull_request workflows for a PR opened with GITHUB_TOKEN
+          # (recursion guard). A PAT-opened PR triggers validate.yml normally.
+          # Falls back to GITHUB_TOKEN when the PAT secret isn't configured.
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

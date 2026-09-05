@@ -1,0 +1,41 @@
+# spec/functions.yaml — canonical function registry (D2/D17)
+#
+# Every function in Cave-Scripts is registered ONCE here; each shell port
+# (bash/, zsh/, fish/) is a 1:1 translation of its row, and the offline
+# suites assert registry conformance (every row exists in all three ports,
+# no unregistered function ships).
+#
+# Fields per entry:
+#   name         cave-* command name (stack-* aliases are generated)
+#   source       originating surface: media (A1/A2), host (C), de (D), btrfs
+#   args/flags   accepted arguments and flags
+#   output       exact stdout contract (what the tests assert)
+#   timeout      api light|mutate|heavy | none  (media functions)
+#   safety       read-only | mutating-safe | destructive-confirm
+#
+# Seed list (names only) from the M1 inventory ledger
+# (WhispersOfJ/thebearcave cave-scripts-inventory.md):
+#
+# media (105, A1): cave-arr-backlog, cave-arr-recently-added, ... → populated
+#                  in the M2 porting pass, one row per function.
+# host (23, C):    cave-sys-aur-audit, cave-sys-claude-home, cave-sys-cron-list,
+#                  cave-sys-disk-free, cave-sys-disk-health,
+#                  cave-sys-firewall-status, cave-sys-flatpak-updates,
+#                  cave-sys-git-status-all, cave-sys-journal-errors,
+#                  cave-sys-journal-size, cave-sys-kernel-check,
+#                  cave-sys-mem-pressure, cave-sys-pkg-clean-cache,
+#                  cave-sys-pkg-history, cave-sys-pkg-orphans,
+#                  cave-sys-pkg-update, cave-sys-pkg-updates,
+#                  cave-sys-reboot-check, cave-sys-service-failed,
+#                  cave-sys-ssh-doctor, cave-sys-timer-status,
+#                  cave-sys-uptime-report, cave-sys-zombie-check
+# helpers (A2/C): __arr_api, __plex_api, __seerr_api, __nzbdav_api,
+#                 __stack_curl, __stack_containers, fmt_*, __host_* → cave-sys
+# de (D): cave-session-*, cave-theme-*, cave-nightlight, cave-idle-toggle,
+#         cave-record, cave-cliphist, cave-audio, cave-media, cave-power,
+#         cave-bar, cave-stack-tui, cave-notify, cave-sync
+# backup (D24): cave-backup (run|dry-run|include-dbs|config)
+# btrfs (M3): cave-btrfs-* (usage/subvolumes/device-stats/scrub-status/
+#             balance-status/qgroup/snapshot-*/subvol-*/scrub/balance)
+
+functions: []
