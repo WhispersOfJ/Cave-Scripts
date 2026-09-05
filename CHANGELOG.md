@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.3.0...v0.4.0) (2026-09-05)
+
+
+### Features
+
+* port the cave-* library to zsh with compdef completions (M2) ([#5](https://github.com/WhispersOfJ/Cave-Scripts/issues/5)) ([a036e33](https://github.com/WhispersOfJ/Cave-Scripts/commit/a036e33b8496a4849fdc99a4d575a0ead9797957))
+
 ## [0.3.0](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.2.1...v0.3.0) (2026-09-05)
 
 
