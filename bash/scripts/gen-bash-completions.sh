@@ -142,20 +142,27 @@ HDR
                     flags="$flags $fwords"
                     ;;
                 '<container>')
-                    printf '            if [ $pos -eq %d ]; then COMPREPLY=($(compgen -W "$CONTAINERS" -- "$cur")); return 0; fi\n' "$((gi + 1))"
+                    printf '            if [ $pos -eq %d ]; then COMPREPLY=($(compgen -W "$CONTAINERS" -- "$cur")); return 0; fi\n' "$gi"
                     gi=$((gi + 1))
                     ;;
                 '<arr-app>')
-                    printf '            if [ $pos -eq %d ]; then COMPREPLY=($(compgen -W "$ARR_APPS" -- "$cur")); return 0; fi\n' "$((gi + 1))"
+                    printf '            if [ $pos -eq %d ]; then COMPREPLY=($(compgen -W "$ARR_APPS" -- "$cur")); return 0; fi\n' "$gi"
                     gi=$((gi + 1))
                     ;;
                 '<butler-task>')
-                    printf '            if [ $pos -eq %d ]; then COMPREPLY=($(compgen -W "$BUTLER_TASKS" -- "$cur")); return 0; fi\n' "$((gi + 1))"
+                    printf '            if [ $pos -eq %d ]; then COMPREPLY=($(compgen -W "$BUTLER_TASKS" -- "$cur")); return 0; fi\n' "$gi"
+                    gi=$((gi + 1))
+                    ;;
+                \<*\>)
+                    # Free-form argument (<limit>/<take> = numeric count, not an
+                    # enumerable word list). Consume the position so later
+                    # groups stay aligned, but offer no candidates — the empty
+                    # COMPREPLY falls back to readline's default (-o default).
                     gi=$((gi + 1))
                     ;;
                 *)
                     words="${g//|/ }"
-                    printf '            if [ $pos -eq %d ]; then COMPREPLY=($(compgen -W "%s" -- "$cur")); return 0; fi\n' "$((gi + 1))" "$words"
+                    printf '            if [ $pos -eq %d ]; then COMPREPLY=($(compgen -W "%s" -- "$cur")); return 0; fi\n' "$gi" "$words"
                     gi=$((gi + 1))
                     ;;
             esac
