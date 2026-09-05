@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.2.1...v0.3.0) (2026-09-05)
+
+
+### Features
+
+* port the bash library to cave-* names with stack-* aliases (M2) ([5f566b9](https://github.com/WhispersOfJ/Cave-Scripts/commit/5f566b9cd6d95258bbaad39807f3458d284611cc))
+
 ## [0.2.1](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.2.0...v0.2.1) (2026-09-05)
 
 
