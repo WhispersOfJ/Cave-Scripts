@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.2.0...v0.2.1) (2026-09-05)
+
+
+### Bug Fixes
+
+* restart waybar via Hyprland so the bar survives a sync ([7c02c92](https://github.com/WhispersOfJ/Cave-Scripts/commit/7c02c923bda35e40c874fff25c1f233c915f1039))
+
 ## [0.2.0](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.1.0...v0.2.0) (2026-09-05)
 
 
