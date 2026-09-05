@@ -1,0 +1,162 @@
+#!/usr/bin/env bash
+# hyprtheme — switch Hyprland/waybar/swaync/wofi/hyprlock/wallpaper themes.
+#
+#   hyprtheme                 pick from a wofi menu
+#   hyprtheme <name>          apply a theme directly
+#   hyprtheme list            list available themes
+#   hyprtheme auto <image>    generate a 7th "auto" theme matched to <image>
+#                             via matugen (Material You), then apply it
+#
+# Each theme is a pre-baked directory under ~/.config/hypr/themes/:
+#   colors.properties     hex palette (for live hyprctl color updates)
+#   waybar.css            copied to  ~/.config/waybar/style.css
+#   swaync.css            copied to  ~/.config/swaync/style.css
+#   wofi.css              copied to  ~/.config/wofi/style.css
+#   hyprlock.conf         copied to  ~/.config/hypr/hyprlock.conf
+#   alacritty-colors.toml copied to  ~/.config/alacritty/colors.toml
+#                         (stack-tui's terminal — see waybar/scripts/stack-tui-toggle.sh)
+#   wallpaper.png         set via hyprpaper
+#
+set -euo pipefail
+
+THEME_DIR="$HOME/.config/hypr/themes"
+CURRENT_FILE="$HOME/.config/hypr/.current-theme"
+MONITOR="HDMI-A-1"
+HPR_CONF="$HOME/.config/hypr/hyprpaper.conf"
+
+pick() {
+    # shellcheck disable=SC2016
+    ls "$THEME_DIR" | wofi --dmenu -p "Theme" -I
+}
+
+apply() {
+    local name="$1"
+    local d="$THEME_DIR/$name"
+    local prop="$d/colors.properties"
+    local accent inactive fg
+
+    [[ -d "$d" ]] || { echo "hyprtheme: unknown theme '$name'" >&2; exit 1; }
+
+    accent="$(awk -F= '/^ACCENT=/{print $2}' "$prop")"
+    inactive="$(awk -F= '/^BG_ALT=/{print $2}' "$prop")"
+    fg="$(awk -F= '/^FG=/{print $2}' "$prop")"
+
+    # Live compositor colors (borders) — instant, no reload needed
+    hyprctl keyword general:col.active_border "rgba(${accent}cc) rgba(${accent}55) 45deg"
+    hyprctl keyword general:col.inactive_border "rgba(${inactive}aa)"
+    # hyprbars (plugin, see HYPR.md 7e) — same live-update pattern.
+    hyprctl keyword plugin:hyprbars:bar_color "rgb(${inactive})" >/dev/null 2>&1 || true
+    hyprctl keyword plugin:hyprbars:col.text "rgb(${fg})" >/dev/null 2>&1 || true
+
+    # Static configs
+    mkdir -p "$HOME/.config/waybar" "$HOME/.config/swaync" "$HOME/.config/wofi" "$HOME/.config/alacritty"
+    cp "$d/waybar.css"            "$HOME/.config/waybar/style.css"
+    cp "$d/swaync.css"            "$HOME/.config/swaync/style.css"
+    cp "$d/wofi.css"              "$HOME/.config/wofi/style.css"
+    cp "$d/hyprlock.conf"         "$HOME/.config/hypr/hyprlock.conf"
+    # alacritty has live_config_reload=true and watches its imports, so any
+    # open stack-tui window re-themes itself with no restart needed.
+    cp "$d/alacritty-colors.toml" "$HOME/.config/alacritty/colors.toml"
+
+    # Restart bar + notification daemon so they pick up new CSS
+    pkill -x waybar >/dev/null 2>&1 || true
+    sleep 0.3
+    waybar >/dev/null 2>&1 &
+    disown
+    pkill -x swaync >/dev/null 2>&1 || true
+    sleep 0.3
+    swaync >/dev/null 2>&1 &
+    disown
+    # swaync (GTK4/libadwaita) can take >0.3s to claim org.freedesktop.Notifications;
+    # wait for it so the notify-send below (and mako, which also races for this
+    # name) doesn't fire into a window with no owner.
+    for _ in $(seq 1 20); do
+        busctl --user status org.freedesktop.Notifications >/dev/null 2>&1 && break
+        sleep 0.1
+    done
+
+    # Wallpaper: hyprpaper >=0.8 has no live-reload/IPC preload command, so
+    # rewrite the wallpaper{} block's path and restart the daemon.
+    sed -i "s|^\(\s*path = \).*|\1$d/wallpaper.png|" "$HPR_CONF"
+    pkill -x hyprpaper >/dev/null 2>&1 || true
+    sleep 0.3
+    hyprpaper >/dev/null 2>&1 &
+    disown
+
+    echo "$name" > "$CURRENT_FILE"
+
+    if command -v notify-send >/dev/null 2>&1; then
+        notify-send -t 1500 "hyprtheme" "Applied: $name"
+    fi
+    echo "hyprtheme: applied '$name'"
+}
+
+gen_auto() {
+    local img="$1"
+    local name="auto"
+    local d="$THEME_DIR/$name"
+
+    [[ -f "$img" ]] || { echo "hyprtheme auto: no such file '$img'" >&2; exit 1; }
+    command -v matugen >/dev/null 2>&1 || { echo "hyprtheme auto: matugen not installed" >&2; exit 1; }
+
+    mkdir -p "$d"
+    local json
+    json="$(matugen image "$img" -m dark -j hex --dry-run --quiet --prefer=saturation 2>/dev/null)" \
+        || { echo "hyprtheme auto: matugen failed to extract a color scheme from '$img'" >&2; exit 1; }
+
+    # Material You gives primary/secondary/tertiary/error as its distinct
+    # "brand" hues — not a full red/orange/yellow/green/blue/purple set like
+    # the hand-picked palettes have, so several of ours below intentionally
+    # reuse the same matugen role. That's deliberate, not a bug: it keeps
+    # the auto theme tonal/harmonious rather than forcing an artificial
+    # rainbow onto a 3-hue source scheme.
+    local vars
+    vars="$(python3 -c '
+import json, sys
+d = json.load(sys.stdin)["colors"]
+def c(role):
+    return d[role]["dark"]["color"].lstrip("#")
+print(c("background"))
+print(c("surface_container"))
+print(c("outline_variant"))
+print(c("on_background"))
+print(c("on_surface_variant"))
+print(c("outline"))
+print(c("primary"))
+print(c("error"))
+print(c("tertiary"))
+print(c("secondary"))
+' <<< "$json")" || { echo "hyprtheme auto: could not parse matugen output" >&2; exit 1; }
+
+    local BG BG_ALT BORDER FG MUTED DIM ACCENT RED ORANGE YELLOW GREEN BLUE PURPLE
+    { read -r BG; read -r BG_ALT; read -r BORDER; read -r FG; read -r MUTED; \
+      read -r DIM; read -r ACCENT; read -r RED; read -r ORANGE; read -r YELLOW; } <<< "$vars"
+    GREEN="$ACCENT"; BLUE="$ORANGE"; PURPLE="$YELLOW"
+
+    THEMES="$THEME_DIR"
+    source "$HOME/.config/hypr/scripts/render-theme.sh"
+    render_theme "$name" "Matched to $(basename "$img")" "$BG" "$BG_ALT" "$BORDER" \
+                 "$FG" "$MUTED" "$DIM" "$ACCENT" "$RED" "$ORANGE" "$YELLOW" "$GREEN" "$BLUE" "$PURPLE"
+
+    local magick
+    magick="$(command -v magick || command -v convert)"
+    "$magick" "$img" "$d/wallpaper.png"
+    echo "hyprtheme: generated 'auto' from $img"
+}
+
+case "${1:-}" in
+    "" | pick)
+        apply "$(pick)"
+        ;;
+    list)
+        ls "$THEME_DIR"
+        ;;
+    auto)
+        [[ -n "${2:-}" ]] || { echo "usage: hyprtheme auto <image-path>" >&2; exit 1; }
+        gen_auto "$2"
+        apply auto
+        ;;
+    *)
+        apply "$1"
+        ;;
+esac

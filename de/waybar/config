@@ -1,0 +1,286 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 45,
+    "spacing": 0,
+    "fixed-center": true,
+    "margin-top": 0,
+    "margin-bottom": 0,
+    "margin-left": 6,
+    "margin-right": 6,
+
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["hyprland/window"],
+    "modules-right": [
+        "privacy",
+        "temperature#cpu",
+        "cpu",
+        "temperature#gpu",
+        "custom/gpu",
+        "memory",
+        "custom/weather",
+        "network",
+        "mpris",
+        "custom/cava",
+        "pulseaudio",
+        "pulseaudio#mic",
+        "bluetooth",
+        "power-profiles-daemon",
+        "custom/updates",
+        "systemd-failed-units",
+        "custom/record",
+        "custom/nightlight",
+        "custom/stack",
+        "custom/idle",
+        "tray",
+        "custom/power",
+        "clock"
+    ],
+
+    // ── Left ─────────────────────────────────────
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "enable-bar-scroll": true,
+        "tooltip": true,
+        "tooltip-format": "Workspace {name}"
+    },
+
+    "hyprland/window": {
+        "max-length": 60,
+        "align": 0.5,
+        "tooltip": false,
+        "on-click": "hyprctl dispatch cyclenext tiled"
+    },
+
+    // ── Custom state modules (scripts kept in ~/.config/hypr/scripts + waybar) ──
+
+    // ── Right ────────────────────────────────────
+    "temperature#cpu": {
+        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
+        "interval": 5,
+        "format": " {temperatureC}°",
+        "format-warning": " {temperatureC}°",
+        "format-critical": " {temperatureC}°",
+        "warning-threshold": 75,
+        "critical-threshold": 90,
+        "tooltip-format": "CPU: {temperatureC}°C"
+    },
+
+    "temperature#gpu": {
+        "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "interval": 5,
+        "format": "󰢮 {temperatureC}°",
+        "format-warning": "󰢮 {temperatureC}°",
+        "format-critical": "󰢮 {temperatureC}°",
+        "warning-threshold": 80,
+        "critical-threshold": 95,
+        "tooltip-format": "GPU edge: {temperatureC}°C"
+    },
+
+    "custom/gpu": {
+        "exec": "$HOME/.config/waybar/scripts/gpu-usage.sh",
+        "interval": 3,
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{}",
+        "on-click": "alacritty -e btop"
+    },
+
+    "custom/weather": {
+        "exec": "$HOME/.config/waybar/scripts/weather.sh",
+        "on-click": "rm -f \"${XDG_CACHE_HOME:-$HOME/.cache}/waybar-weather/raw\" && $HOME/.config/waybar/scripts/weather.sh",
+        "interval": 300,
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{}"
+    },
+
+    "custom/cava": {
+        "exec": "$HOME/.config/waybar/scripts/cava-bar.sh",
+        "on-click": "alacritty --class cava-full -e cava",
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{}"
+    },
+
+    "mpris": {
+        "interval": 5,
+        "format": "{status_icon} {dynamic}",
+        "format-paused": "{status_icon} {dynamic}",
+        "max-length": 34,
+        "dynamic-len": 30,
+        "tooltip": true,
+        "tooltip-format": "{player}: {artist} - {title}",
+        "player-icons": {
+            "default": "",
+            "mpv": ""
+        },
+        "status-icons": {
+            "playing": "",
+            "paused": "",
+            "stopped": ""
+        },
+        "on-click": "playerctl play-pause",
+        "on-click-middle": "playerctl previous",
+        "on-click-right": "playerctl next"
+    },
+
+    "bluetooth": {
+        "format": "",
+        "format-off": " off",
+        "format-on": "",
+        "format-connected": " {num_connections}",
+        "format-no-controller": "",
+        "tooltip": true,
+        "tooltip-format": "{controller_alias}: {num_connections} connected",
+        "on-click": "bluetoothctl power on",
+        "on-click-right": "alacritty -e bluetoothctl"
+    },
+
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip": true,
+        "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+        "format-icons": {
+            "performance": "",
+            "balanced": "",
+            "power-saver": "",
+            "default": ""
+        }
+    },
+
+    "custom/updates": {
+        "exec": "$HOME/.config/waybar/scripts/updates.sh",
+        "on-click": "alacritty -e sh -c 'sudo pacman -Syu; read'",
+        "interval": 900,
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{}"
+    },
+
+    "systemd-failed-units": {
+        "user": true,
+        "system": false,
+        "hide-on-ok": true,
+        "format": " {nr_failed_user}",
+        "format-ok": "",
+        "tooltip": true
+    },
+
+    "privacy": {
+        "icon-spacing": 7,
+        "icon-size": 22,
+        "tooltip": true,
+        "modules": [
+            {
+                "type": "screenshare"
+            },
+            {
+                "type": "audio-in"
+            },
+            {
+                "type": "audio-out"
+            }
+        ]
+    },
+
+    "cpu": {
+        "interval": 2,
+        "format": "\uf2db {usage}%",
+        "tooltip": false,
+        "on-click": "alacritty -e btop"
+    },
+
+    "memory": {
+        "interval": 2,
+        "format": "\uf1c0 {percentage}%",
+        "tooltip": false,
+        "on-click": "alacritty -e btop"
+    },
+
+    "network": {
+        "format-wifi": "\uf1eb {signalStrength}%  \uf019 {bandwidthDownBytes} \uf093 {bandwidthUpBytes}",
+        "format-ethernet": "\uf1e6 {bandwidthDownBytes} \uf093 {bandwidthUpBytes}",
+        "interval": 2,
+        "format-disconnected": "\uf127 offline",
+        "tooltip": true,
+        "tooltip-format": "{ifname}: {ipaddr}/{cidr} via {gwaddr}",
+        "on-click": "alacritty -e nmtui",
+        "on-click-right": "alacritty -e nmcli device wifi list"
+    },
+
+    "pulseaudio": {
+        "scroll-step": 5,
+        "format": "{icon} {volume}%",
+        "format-icons": ["\uf026", "\uf027", "\uf028", "\uf028", "\uf028", "\uf028"],
+        "format-muted": "\uf026 muted",
+        "tooltip": true,
+        "tooltip-format": "{desc}: {volume}%",
+        "on-click": "bash -c 'command -v pavucontrol >/dev/null && pavucontrol'",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    },
+
+    "pulseaudio#mic": {
+        "target": "source",
+        "format": "\uf130 {volume}%",
+        "format-muted": "\uf131 muted",
+        "tooltip": true,
+        "tooltip-format": "{desc}: {volume}%",
+        "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+        "on-click-right": "bash -c 'command -v pavucontrol >/dev/null && pavucontrol'"
+    },
+
+    "tray": {
+        "icon-size": 17,
+        "spacing": 6
+    },
+
+    "custom/stack": {
+        "exec": "$HOME/.config/waybar/scripts/stack-tui-toggle.sh state",
+        "on-click": "$HOME/.config/waybar/scripts/stack-tui-toggle.sh toggle",
+        "interval": 2,
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{}"
+    },
+
+    "custom/idle": {
+        "exec": "$HOME/.config/hypr/scripts/idle-toggle.sh state",
+        "on-click": "$HOME/.config/hypr/scripts/idle-toggle.sh toggle",
+        "interval": 5,
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{}"
+    },
+
+    "custom/record": {
+        "exec": "$HOME/.config/waybar/scripts/record-status.sh",
+        "on-click": "$HOME/.config/hypr/scripts/recorder-toggle.sh",
+        "interval": 2,
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{}"
+    },
+
+    "custom/nightlight": {
+        "exec": "$HOME/.config/waybar/scripts/nightlight-status.sh",
+        "on-click": "$HOME/.config/hypr/scripts/gammastep-toggle.sh",
+        "interval": 10,
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{}"
+    },
+
+    "custom/power": {
+        "format": "\uf011",
+        "tooltip": false,
+        "on-click": "bash $HOME/.config/hypr/scripts/power.sh"
+    },
+
+    "clock": {
+        "interval": 1,
+        "format": "\uf073 {:%a %e %b   %H:%M:%S}",
+        "tooltip-format": "{:%A %d %B %Y, week %V}",
+        "on-click": "alacritty -e sh -c 'cal -3; read'"
+    }
+}
