@@ -13,6 +13,10 @@
 # Every API call goes through __stack_curl so a wedged service can never hang a
 # cave-* command forever. Budgets are seconds; override any of them with the
 # matching env var (e.g. STACK_API_TIMEOUT_HEAVY=60) for a slow host.
+set -q STACK_API_TIMEOUT_LIGHT; or set -gx STACK_API_TIMEOUT_LIGHT 10
+set -q STACK_API_TIMEOUT_MUTATE; or set -gx STACK_API_TIMEOUT_MUTATE 20
+set -q STACK_API_TIMEOUT_HEAVY; or set -gx STACK_API_TIMEOUT_HEAVY 30
+set -q STACK_DOCKER_TIMEOUT; or set -gx STACK_DOCKER_TIMEOUT 5
 # Data transport to embedded python: bulk payloads that scale with library
 # size (series maps, history, full-collection pulls) must be piped via stdin
 # (echo "$result" | python3 -c ...), never passed through env vars — a single
