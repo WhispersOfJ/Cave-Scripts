@@ -93,9 +93,18 @@ if [ "$CHECK" -eq 1 ]; then
 fi
 
 # Reload the affected surfaces (never in --check).
+# Restart waybar THROUGH Hyprland (hyprctl dispatch exec) rather than
+# backgrounding it from here: a plain `nohup waybar &` is reaped when the
+# invoking shell exits (non-interactive runs), leaving the bar dead. hyprctl
+# spawns it the same way the session's `exec-once = waybar` does, so it
+# survives regardless of caller.
 if [ "$want_waybar" -eq 1 ]; then
     pkill -x waybar 2>/dev/null || true
-    nohup waybar >/dev/null 2>&1 &
+    if command -v hyprctl >/dev/null 2>&1 && hyprctl activeworkspace >/dev/null 2>&1; then
+        hyprctl dispatch exec waybar >/dev/null 2>&1 || true
+    else
+        setsid waybar >/dev/null 2>&1 < /dev/null &
+    fi
     echo "waybar restarted"
 fi
 if [ "$want_hypr" -eq 1 ]; then
