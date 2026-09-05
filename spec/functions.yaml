@@ -1,41 +1,252 @@
 # spec/functions.yaml — canonical function registry (D2/D17)
 #
-# Every function in Cave-Scripts is registered ONCE here; each shell port
-# (bash/, zsh/, fish/) is a 1:1 translation of its row, and the offline
-# suites assert registry conformance (every row exists in all three ports,
-# no unregistered function ships).
+# Every function is registered ONCE here; each shell port (bash/, zsh/, fish/)
+# is a 1:1 translation of its row, and the offline suites assert registry
+# conformance (every row exists in all three ports, no unregistered function).
 #
-# Fields per entry:
-#   name         cave-* command name (stack-* aliases are generated)
-#   source       originating surface: media (A1/A2), host (C), de (D), btrfs
-#   args/flags   accepted arguments and flags
-#   output       exact stdout contract (what the tests assert)
-#   timeout      api light|mutate|heavy | none  (media functions)
-#   safety       read-only | mutating-safe | destructive-confirm
+# Source: the M1 inventory ledger (WhispersOfJ/thebearcave
+# cave-scripts-inventory.md). Names use the cave-* scheme (L2: host
+# diagnostics are cave-sys-*); stack-* aliases are generated, never listed.
 #
-# Seed list (names only) from the M1 inventory ledger
-# (WhispersOfJ/thebearcave cave-scripts-inventory.md):
+# Fields:
+#   name      cave-* command
+#   family    media family / sys / de / backup / btrfs / helper
+#   safety    read-only | mutating-safe | destructive-confirm | internal
+#   timeout   api: light|mutate|heavy | none (media API calls) | host (no API)
+#   args      known flags/arguments (exact per-flag parity lands with the M2
+#             porting pass + L1 body diffs; entries marked "M2" are filled
+#             there)
+#   out       output contract — canonical wording is the ported bash
+#             implementation; the M2 offline suites assert exact lines.
+#             Marked "(tests)" where the contract is pinned by tests, not prose.
 #
-# media (105, A1): cave-arr-backlog, cave-arr-recently-added, ... → populated
-#                  in the M2 porting pass, one row per function.
-# host (23, C):    cave-sys-aur-audit, cave-sys-claude-home, cave-sys-cron-list,
-#                  cave-sys-disk-free, cave-sys-disk-health,
-#                  cave-sys-firewall-status, cave-sys-flatpak-updates,
-#                  cave-sys-git-status-all, cave-sys-journal-errors,
-#                  cave-sys-journal-size, cave-sys-kernel-check,
-#                  cave-sys-mem-pressure, cave-sys-pkg-clean-cache,
-#                  cave-sys-pkg-history, cave-sys-pkg-orphans,
-#                  cave-sys-pkg-update, cave-sys-pkg-updates,
-#                  cave-sys-reboot-check, cave-sys-service-failed,
-#                  cave-sys-ssh-doctor, cave-sys-timer-status,
-#                  cave-sys-uptime-report, cave-sys-zombie-check
-# helpers (A2/C): __arr_api, __plex_api, __seerr_api, __nzbdav_api,
-#                 __stack_curl, __stack_containers, fmt_*, __host_* → cave-sys
-# de (D): cave-session-*, cave-theme-*, cave-nightlight, cave-idle-toggle,
-#         cave-record, cave-cliphist, cave-audio, cave-media, cave-power,
-#         cave-bar, cave-stack-tui, cave-notify, cave-sync
-# backup (D24): cave-backup (run|dry-run|include-dbs|config)
-# btrfs (M3): cave-btrfs-* (usage/subvolumes/device-stats/scrub-status/
-#             balance-status/qgroup/snapshot-*/subvol-*/scrub/balance)
+# Defaults by family (applied unless overridden on the row):
+#   media read families  -> safety read-only,   timeout light
+#   media mutate actions -> safety mutating-safe, timeout mutate
+#   maintenance/db ops   -> timeout heavy
+#   host sys / de / btrfs-> safety read-only,   timeout none/host (mutations
+#                          explicitly marked on the row)
+#
+# Regeneration policy: any API/endpoint or behaviour change edits the row
+# first, then every port + its tests.
 
-functions: []
+# ─────────────────────────────────────────────────────────────────────────────
+# media — *arr / plex / nzbdav / seerr (from inventory A1, renamed stack-*→cave-*)
+# ─────────────────────────────────────────────────────────────────────────────
+functions:
+  # arr — backlog / wanted / blocklist / search / imports
+  - {name: cave-arr-backlog, family: arr, safety: read-only}
+  - {name: cave-arr-recently-added, family: arr, safety: read-only}
+  - {name: cave-arr-toggle-search, family: arr, safety: mutating-safe}
+  - {name: cave-arr-blocklist, family: arr, safety: read-only}
+  - {name: cave-arr-clear-blocklist, family: arr, safety: destructive-confirm}
+  - {name: cave-arr-missing-aired, family: arr, safety: read-only}
+  - {name: cave-cutoff-unmet, family: arr, safety: read-only}
+  - {name: cave-arr-import, family: arr, safety: mutating-safe, timeout: heavy}
+  - {name: cave-arr-import-all, family: arr, safety: mutating-safe, timeout: heavy}
+  - {name: cave-arr-import-candidates, family: arr, safety: read-only, timeout: heavy}
+  - {name: cave-arr-import-starvation, family: arr, safety: read-only, timeout: heavy}
+  - {name: cave-arr-logs, family: arr, safety: read-only}
+  - {name: cave-arr, family: arr, safety: read-only}
+  - {name: cave-backlog-status, family: arr, safety: read-only, timeout: heavy}
+  - {name: cave-command-queue-summary, family: arr, safety: read-only}
+  - {name: cave-import-lists, family: arr, safety: read-only, timeout: heavy}
+  - {name: cave-radarr-health, family: arr, safety: read-only}
+  - {name: cave-radarr-prune, family: arr, safety: destructive-confirm, timeout: heavy,
+     args: "[--db PATH] (monthly cron)", out: "MediaInfo/history prune + vacuum + verify — see check_radarr_db_size.py"}
+  - {name: cave-sonarr-prune, family: arr, safety: destructive-confirm, timeout: heavy,
+     args: "[--db PATH] (monthly cron)", out: "same contract as cave-radarr-prune for EpisodeFiles"}
+  - {name: cave-prowlarr-indexers, family: arr, safety: read-only}
+  - {name: cave-arr-queue-errors, family: queue, safety: read-only}
+  - {name: cave-queue-status, family: queue, safety: read-only}
+  - {name: cave-queue-autofix, family: queue, safety: mutating-safe}
+
+  # lists / loop ratings — external trackers
+  - {name: cave-mdblist-track, family: lists, safety: mutating-safe}
+  - {name: cave-mdblist-untrack, family: lists, safety: mutating-safe}
+  - {name: cave-mdblist-tracked, family: lists, safety: read-only}
+  - {name: cave-mdblist-import, family: lists, safety: mutating-safe, timeout: heavy}
+  - {name: cave-mdblist-history, family: lists, safety: read-only, timeout: heavy}
+  - {name: cave-letterboxd-track, family: lists, safety: mutating-safe}
+  - {name: cave-letterboxd-untrack, family: lists, safety: mutating-safe}
+  - {name: cave-letterboxd-tracked, family: lists, safety: read-only}
+  - {name: cave-letterboxd-import, family: lists, safety: mutating-safe, timeout: heavy}
+  - {name: cave-letterboxd-history, family: lists, safety: read-only, timeout: heavy}
+  - {name: cave-loop-candidates, family: loop, safety: read-only, timeout: heavy}
+  - {name: cave-loop-exclude, family: loop, safety: mutating-safe}
+  - {name: cave-loop-unmonitor, family: loop, safety: mutating-safe}
+  - {name: cave-tmdb-missing, family: loop, safety: read-only, timeout: heavy}
+  - {name: cave-rating-imdb, family: loop, safety: read-only, timeout: heavy}
+  - {name: cave-rating-mdblist, family: loop, safety: read-only, timeout: heavy}
+
+  # nzbdav
+  - {name: cave-nzbdav-queue, family: nzbdav, safety: read-only}
+  - {name: cave-nzbdav-history, family: nzbdav, safety: read-only, timeout: heavy}
+  - {name: cave-nzbdav-stats, family: nzbdav, safety: read-only}
+  - {name: cave-mount-health, family: nzbdav, safety: read-only}
+  - {name: cave-nzbdav-dedup-check, family: nzbdav, safety: read-only, timeout: heavy}
+  - {name: cave-nzbdav-delete-failures, family: nzbdav, safety: destructive-confirm}
+
+  # plex — core reads
+  - {name: cave-plex, family: plex, safety: read-only}
+  - {name: cave-plex-sessions, family: plex, safety: read-only}
+  - {name: cave-plex-recently-added, family: plex, safety: read-only}
+  - {name: cave-plex-libraries, family: plex, safety: read-only}
+  - {name: cave-plex-analyze, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-butler, family: plex, safety: mutating-safe}
+  - {name: cave-plex-butler-all, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-empty-trash, family: plex, safety: mutating-safe}
+  - {name: cave-plex-refresh-libraries, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-updates, family: plex, safety: read-only}
+  - {name: cave-plex-markers, family: plex, safety: read-only, timeout: heavy}
+  - {name: cave-plex-refresh-epg, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-refresh-local-media, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-duplicates, family: plex, safety: read-only, timeout: heavy}
+  - {name: cave-plex-process-assets, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-backup-database, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-automatic-updates, family: plex, safety: mutating-safe}
+  - {name: cave-plex-garbage-collect-media, family: plex, safety: destructive-confirm, timeout: heavy}
+  - {name: cave-plex-garbage-collect-blobs, family: plex, safety: destructive-confirm, timeout: heavy}
+  - {name: cave-plex-clean-cache-files, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-clean-log-files, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-image-clean, family: plex, safety: destructive-confirm, timeout: heavy,
+     args: "PhotoTranscoder-only; run only while Plex is idle"}
+  - {name: cave-plex-deep-media-analysis, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-upgrade-media-analysis, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-music-analysis, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-loudness-analysis, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-generate-media-index, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-generate-voice-activity, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-generate-intro-markers, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-generate-credits-markers, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-generate-ad-markers, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-plex-generate-chapter-thumbs, family: plex, safety: mutating-safe, timeout: heavy}
+  - {name: cave-sonarr-fix-episode-monitoring, family: plex, safety: mutating-safe}
+
+  # media disk / maintenance / misc / watchable / arrivals
+  - {name: cave-disk-config-sizes, family: disk, safety: read-only, timeout: heavy}
+  - {name: cave-docker-disk-usage, family: disk, safety: read-only}
+  - {name: cave-disk-reclaim, family: disk, safety: destructive-confirm, timeout: heavy,
+     args: "--dry-run | -y --aggressive (04:00 cron)", out: "docker prune report; Total reclaimed space line"}
+  - {name: cave-maintenance-digest, family: maintenance, safety: read-only,
+     args: "[--repo DIR] [--skip-user-unit NAME]...", out: "one line per surface, rc 1 on any FAIL (see docs)"}
+  - {name: cave-audit-residue, family: maintenance, safety: read-only,
+     args: "[--repo-only] [--repo DIR]", out: "Retired-residue audit lines; rc 1 on findings"}
+  - {name: cave-config-drift, family: maintenance, safety: read-only,
+     out: "running images vs compose pins; rc 1 on drift; recreate-reminder footer"}
+  - {name: cave-seerr-requests, family: misc, safety: read-only}
+  - {name: cave-notify-test, family: misc, safety: mutating-safe}
+  - {name: cave-claude-full-backup, family: misc, safety: mutating-safe, timeout: heavy}
+  - {name: cave-worktree, family: misc, safety: read-only}
+  - {name: cave-image-check, family: misc, safety: read-only, timeout: heavy}
+  - {name: cave-perms-check, family: misc, safety: read-only}
+  - {name: cave-oom-check, family: misc, safety: read-only}
+  - {name: cave-resource-check, family: misc, safety: read-only}
+  - {name: cave-log-levels, family: misc, safety: read-only}
+  - {name: cave-watchable, family: watchable, safety: read-only,
+     out: "one screen: requests/unwatched/recent — sections degrade per source"}
+  - {name: cave-unwatched, family: watchable, safety: read-only, args: "[limit]"}
+  - {name: cave-recent, family: watchable, safety: read-only, args: "[limit]"}
+  - {name: cave-requests, family: watchable, safety: read-only, args: "[take]",
+     out: "Seerr request count line + open requests with media-state labels"}
+  - {name: cave-arrival-notify, family: arrivals, safety: mutating-safe,
+     args: "--dry-run | --no-refresh", out: "one Discord ping per confirmed arrival (cursor state)"}
+  - {name: cave-activity-feed, family: arrivals, safety: read-only, args: "[N]",
+     out: "re-renders .cache feed.json/xml and prints latest N"}
+
+  # core
+  - {name: cave-status, family: core, safety: read-only}
+  - {name: cave-container, family: core, safety: read-only}
+  - {name: cave-restart-all, family: core, safety: mutating-safe}
+  - {name: cave-top, family: core, safety: read-only}
+  - {name: cave-version, family: core, safety: read-only}
+  - {name: cave-help, family: core, safety: read-only,
+     out: "alphabetical command list == defined function set (drift-asserted)"}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# host diagnostics (inventory C, renamed stack-* → cave-sys-*, decision L2)
+# pure host, no API → timeout host
+# ─────────────────────────────────────────────────────────────────────────────
+  - {name: cave-sys-aur-audit, family: sys, safety: read-only}
+  - {name: cave-sys-claude-home, family: sys, safety: read-only, args: "cds to ~/Claude"}
+  - {name: cave-sys-cron-list, family: sys, safety: read-only}
+  - {name: cave-sys-disk-free, family: sys, safety: read-only, args: "[warn] [crit]"}
+  - {name: cave-sys-disk-health, family: sys, safety: read-only, out: "SMART summary"}
+  - {name: cave-sys-firewall-status, family: sys, safety: read-only}
+  - {name: cave-sys-flatpak-updates, family: sys, safety: read-only, args: "[--apply]"}
+  - {name: cave-sys-git-status-all, family: sys, safety: read-only}
+  - {name: cave-sys-journal-errors, family: sys, safety: read-only}
+  - {name: cave-sys-journal-size, family: sys, safety: read-only}
+  - {name: cave-sys-kernel-check, family: sys, safety: read-only}
+  - {name: cave-sys-mem-pressure, family: sys, safety: read-only, out: "kernel PSI stats"}
+  - {name: cave-sys-pkg-clean-cache, family: sys, safety: destructive-confirm, args: "[N]"}
+  - {name: cave-sys-pkg-history, family: sys, safety: read-only, args: "[N]"}
+  - {name: cave-sys-pkg-orphans, family: sys, safety: read-only, args: "[--remove]"}
+  - {name: cave-sys-pkg-update, family: sys, safety: mutating-safe, args: "[--yes]"}
+  - {name: cave-sys-pkg-updates, family: sys, safety: read-only}
+  - {name: cave-sys-reboot-check, family: sys, safety: read-only}
+  - {name: cave-sys-service-failed, family: sys, safety: read-only}
+  - {name: cave-sys-ssh-doctor, family: sys, safety: read-only}
+  - {name: cave-sys-timer-status, family: sys, safety: read-only}
+  - {name: cave-sys-uptime-report, family: sys, safety: read-only}
+  - {name: cave-sys-zombie-check, family: sys, safety: read-only}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# desktop (spec §6.2 / inventory D; exact flags filled in M3)
+# ─────────────────────────────────────────────────────────────────────────────
+  - {name: cave-lock, family: de, safety: read-only, timeout: none}
+  - {name: cave-idle-toggle, family: de, safety: mutating-safe, timeout: none, args: "state | toggle | reload"}
+  - {name: cave-theme, family: de, safety: mutating-safe, timeout: none,
+     args: "list | current | set <name> | cycle | auto-from-image <img>", out: "six-palette cycle; auto excluded (D18)"}
+  - {name: cave-nightlight, family: de, safety: mutating-safe, timeout: none, args: "state | toggle"}
+  - {name: cave-record, family: de, safety: mutating-safe, timeout: none, args: "start | stop | status"}
+  - {name: cave-cliphist, family: de, safety: read-only, timeout: none, args: "pick"}
+  - {name: cave-audio, family: de, safety: mutating-safe, timeout: none, args: "volume/mute — pactl (M3)"}
+  - {name: cave-media, family: de, safety: mutating-safe, timeout: none, args: "transport — playerctl (M3)"}
+  - {name: cave-power, family: de, safety: mutating-safe, timeout: none,
+     args: "lock | logout | suspend | reboot | shutdown (each guarded)"}
+  - {name: cave-bar, family: de, safety: mutating-safe, timeout: none,
+     args: "restart | reload | toggle-module | signal; cave-bar-check guard (M3)"}
+  - {name: cave-stack-tui, family: de, safety: mutating-safe, timeout: none, args: "toggle | state | opacity [v]"}
+  - {name: cave-notify, family: de, safety: read-only, timeout: none, args: "swaync control (M3)"}
+  - {name: cave-sync, family: de, safety: mutating-safe, timeout: none,
+     args: "waybar | hypr | all [--check]", out: "drives de/sync/cave-sync.sh (skeleton shipped M1)"}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# backup (D24 — wraps thebearcave backup_dropbox.py; no btrfs send/recv)
+# ─────────────────────────────────────────────────────────────────────────────
+  - {name: cave-backup, family: backup, safety: mutating-safe, timeout: heavy,
+     args: "run | --dry-run | --include-dbs | config (retention)", out: "OK <path> (<bytes>); prunes to keep=30"}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# btrfs (M3 build; safety split per spec §6.4 — info read-only, actions guarded)
+# ─────────────────────────────────────────────────────────────────────────────
+  - {name: cave-btrfs-usage, family: btrfs, safety: read-only}
+  - {name: cave-btrfs-subvolumes, family: btrfs, safety: read-only}
+  - {name: cave-btrfs-device-stats, family: btrfs, safety: read-only}
+  - {name: cave-btrfs-scrub-status, family: btrfs, safety: read-only}
+  - {name: cave-btrfs-balance-status, family: btrfs, safety: read-only}
+  - {name: cave-btrfs-qgroup, family: btrfs, safety: read-only}
+  - {name: cave-btrfs-snapshot, family: btrfs, safety: mutating-safe, args: "create | list | delete <name> (M3)"}
+  - {name: cave-btrfs-subvol, family: btrfs, safety: mutating-safe, args: "create (M3)"}
+  - {name: cave-btrfs-scrub, family: btrfs, safety: destructive-confirm, args: "start (--yes + confirm; M3)"}
+  - {name: cave-btrfs-balance, family: btrfs, safety: destructive-confirm, args: "start (--yes + confirm; M3)"}
+  - {name: cave-btrfs-snapper, family: btrfs, safety: read-only, args: "status/diff across root+home configs (M3)"}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# helpers / internals (not user commands; ported per shell, never registry-asserted
+# as user-facing, but tracked so the ports stay aligned)
+# ─────────────────────────────────────────────────────────────────────────────
+helpers:
+  api: [__arr_api, __plex_api, __seerr_api, __nzbdav_api, __stack_curl,
+        __stack_containers, __stack_arr_app, __arr_api_key, __arr_api_url,
+        __plex_butler, __stack_metadata]
+  loader: [__bearcave_load_env, __bearcave_warn_stale_keys, _fmt_color_enabled,
+           fmt_heading, fmt_success, fmt_error, fmt_warning, fmt_dim,
+           fmt_kv, fmt_status_dot, docker_wrapper, copy, backup]
+  host: [__host_containers, __host_helper]
+
+# Registry conformance: every `functions[].name` must exist in bash/, zsh/,
+# and fish/ (with its generated stack-* alias where applicable); every public
+# function in a port must have a row. Helpers above are exempt from the
+# user-facing alias rule but must exist in each port's private layer.
