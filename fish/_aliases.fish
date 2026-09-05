@@ -1,0 +1,142 @@
+# ============================================================================
+# _aliases.fish — permanent stack-* → cave-* alias layer (D21)
+# ============================================================================
+# Every stack-* command name forwards to its cave-* function so muscle
+# memory, cron lines, and docs keep working indefinitely. Generated from
+# spec/functions.yaml — regenerate with fish/scripts/gen-fish-aliases.sh.
+# Aliases are real fish functions (not `alias`es) so they forward
+# arguments and work in scripts, completion, and non-interactive shells.
+#
+# Conformance: tests/fish/test_cave_scripts.fish asserts that every row
+# in functions.yaml has a stack-* forwarder here, and that no forwarder
+# lacks a cave-* target.
+# ============================================================================
+
+function stack-activity-feed; cave-activity-feed $argv; end
+function stack-arr; cave-arr $argv; end
+function stack-arr-backlog; cave-arr-backlog $argv; end
+function stack-arr-blocklist; cave-arr-blocklist $argv; end
+function stack-arr-clear-blocklist; cave-arr-clear-blocklist $argv; end
+function stack-arr-import; cave-arr-import $argv; end
+function stack-arr-import-all; cave-arr-import-all $argv; end
+function stack-arr-import-candidates; cave-arr-import-candidates $argv; end
+function stack-arr-import-starvation; cave-arr-import-starvation $argv; end
+function stack-arr-logs; cave-arr-logs $argv; end
+function stack-arr-missing-aired; cave-arr-missing-aired $argv; end
+function stack-arr-queue-errors; cave-arr-queue-errors $argv; end
+function stack-arr-recently-added; cave-arr-recently-added $argv; end
+function stack-arr-toggle-search; cave-arr-toggle-search $argv; end
+function stack-arrival-notify; cave-arrival-notify $argv; end
+function stack-audit-residue; cave-audit-residue $argv; end
+function stack-aur-audit; cave-sys-aur-audit $argv; end
+function stack-backlog-status; cave-backlog-status $argv; end
+function stack-claude-full-backup; cave-claude-full-backup $argv; end
+function stack-claude-home; cave-sys-claude-home $argv; end
+function stack-command-queue-summary; cave-command-queue-summary $argv; end
+function stack-config-drift; cave-config-drift $argv; end
+function stack-container; cave-container $argv; end
+function stack-cron-list; cave-sys-cron-list $argv; end
+function stack-cutoff-unmet; cave-cutoff-unmet $argv; end
+function stack-disk-config-sizes; cave-disk-config-sizes $argv; end
+function stack-disk-free; cave-sys-disk-free $argv; end
+function stack-disk-health; cave-sys-disk-health $argv; end
+function stack-disk-reclaim; cave-disk-reclaim $argv; end
+function stack-docker-disk-usage; cave-docker-disk-usage $argv; end
+function stack-firewall-status; cave-sys-firewall-status $argv; end
+function stack-flatpak-updates; cave-sys-flatpak-updates $argv; end
+function stack-git-status-all; cave-sys-git-status-all $argv; end
+function stack-help; cave-help $argv; end
+function stack-image-check; cave-image-check $argv; end
+function stack-import-lists; cave-import-lists $argv; end
+function stack-journal-errors; cave-sys-journal-errors $argv; end
+function stack-journal-size; cave-sys-journal-size $argv; end
+function stack-kernel-check; cave-sys-kernel-check $argv; end
+function stack-letterboxd-history; cave-letterboxd-history $argv; end
+function stack-letterboxd-import; cave-letterboxd-import $argv; end
+function stack-letterboxd-track; cave-letterboxd-track $argv; end
+function stack-letterboxd-tracked; cave-letterboxd-tracked $argv; end
+function stack-letterboxd-untrack; cave-letterboxd-untrack $argv; end
+function stack-log-levels; cave-log-levels $argv; end
+function stack-loop-candidates; cave-loop-candidates $argv; end
+function stack-loop-exclude; cave-loop-exclude $argv; end
+function stack-loop-unmonitor; cave-loop-unmonitor $argv; end
+function stack-maintenance-digest; cave-maintenance-digest $argv; end
+function stack-mdblist-history; cave-mdblist-history $argv; end
+function stack-mdblist-import; cave-mdblist-import $argv; end
+function stack-mdblist-track; cave-mdblist-track $argv; end
+function stack-mdblist-tracked; cave-mdblist-tracked $argv; end
+function stack-mdblist-untrack; cave-mdblist-untrack $argv; end
+function stack-mem-pressure; cave-sys-mem-pressure $argv; end
+function stack-mount-health; cave-mount-health $argv; end
+function stack-notify-test; cave-notify-test $argv; end
+function stack-nzbdav-dedup-check; cave-nzbdav-dedup-check $argv; end
+function stack-nzbdav-delete-failures; cave-nzbdav-delete-failures $argv; end
+function stack-nzbdav-history; cave-nzbdav-history $argv; end
+function stack-nzbdav-queue; cave-nzbdav-queue $argv; end
+function stack-nzbdav-stats; cave-nzbdav-stats $argv; end
+function stack-oom-check; cave-oom-check $argv; end
+function stack-perms-check; cave-perms-check $argv; end
+function stack-pkg-clean-cache; cave-sys-pkg-clean-cache $argv; end
+function stack-pkg-history; cave-sys-pkg-history $argv; end
+function stack-pkg-orphans; cave-sys-pkg-orphans $argv; end
+function stack-pkg-update; cave-sys-pkg-update $argv; end
+function stack-pkg-updates; cave-sys-pkg-updates $argv; end
+function stack-plex; cave-plex $argv; end
+function stack-plex-analyze; cave-plex-analyze $argv; end
+function stack-plex-automatic-updates; cave-plex-automatic-updates $argv; end
+function stack-plex-backup-database; cave-plex-backup-database $argv; end
+function stack-plex-butler; cave-plex-butler $argv; end
+function stack-plex-butler-all; cave-plex-butler-all $argv; end
+function stack-plex-clean-cache-files; cave-plex-clean-cache-files $argv; end
+function stack-plex-clean-log-files; cave-plex-clean-log-files $argv; end
+function stack-plex-deep-media-analysis; cave-plex-deep-media-analysis $argv; end
+function stack-plex-duplicates; cave-plex-duplicates $argv; end
+function stack-plex-empty-trash; cave-plex-empty-trash $argv; end
+function stack-plex-garbage-collect-blobs; cave-plex-garbage-collect-blobs $argv; end
+function stack-plex-garbage-collect-media; cave-plex-garbage-collect-media $argv; end
+function stack-plex-generate-ad-markers; cave-plex-generate-ad-markers $argv; end
+function stack-plex-generate-chapter-thumbs; cave-plex-generate-chapter-thumbs $argv; end
+function stack-plex-generate-credits-markers; cave-plex-generate-credits-markers $argv; end
+function stack-plex-generate-intro-markers; cave-plex-generate-intro-markers $argv; end
+function stack-plex-generate-media-index; cave-plex-generate-media-index $argv; end
+function stack-plex-generate-voice-activity; cave-plex-generate-voice-activity $argv; end
+function stack-plex-image-clean; cave-plex-image-clean $argv; end
+function stack-plex-libraries; cave-plex-libraries $argv; end
+function stack-plex-loudness-analysis; cave-plex-loudness-analysis $argv; end
+function stack-plex-markers; cave-plex-markers $argv; end
+function stack-plex-music-analysis; cave-plex-music-analysis $argv; end
+function stack-plex-process-assets; cave-plex-process-assets $argv; end
+function stack-plex-recently-added; cave-plex-recently-added $argv; end
+function stack-plex-refresh-epg; cave-plex-refresh-epg $argv; end
+function stack-plex-refresh-libraries; cave-plex-refresh-libraries $argv; end
+function stack-plex-refresh-local-media; cave-plex-refresh-local-media $argv; end
+function stack-plex-sessions; cave-plex-sessions $argv; end
+function stack-plex-updates; cave-plex-updates $argv; end
+function stack-plex-upgrade-media-analysis; cave-plex-upgrade-media-analysis $argv; end
+function stack-prowlarr-indexers; cave-prowlarr-indexers $argv; end
+function stack-queue-autofix; cave-queue-autofix $argv; end
+function stack-queue-status; cave-queue-status $argv; end
+function stack-radarr-health; cave-radarr-health $argv; end
+function stack-radarr-prune; cave-radarr-prune $argv; end
+function stack-rating-imdb; cave-rating-imdb $argv; end
+function stack-rating-mdblist; cave-rating-mdblist $argv; end
+function stack-reboot-check; cave-sys-reboot-check $argv; end
+function stack-recent; cave-recent $argv; end
+function stack-requests; cave-requests $argv; end
+function stack-resource-check; cave-resource-check $argv; end
+function stack-restart-all; cave-restart-all $argv; end
+function stack-seerr-requests; cave-seerr-requests $argv; end
+function stack-service-failed; cave-sys-service-failed $argv; end
+function stack-sonarr-fix-episode-monitoring; cave-sonarr-fix-episode-monitoring $argv; end
+function stack-sonarr-prune; cave-sonarr-prune $argv; end
+function stack-ssh-doctor; cave-sys-ssh-doctor $argv; end
+function stack-status; cave-status $argv; end
+function stack-timer-status; cave-sys-timer-status $argv; end
+function stack-tmdb-missing; cave-tmdb-missing $argv; end
+function stack-top; cave-top $argv; end
+function stack-unwatched; cave-unwatched $argv; end
+function stack-uptime-report; cave-sys-uptime-report $argv; end
+function stack-version; cave-version $argv; end
+function stack-watchable; cave-watchable $argv; end
+function stack-worktree; cave-worktree $argv; end
+function stack-zombie-check; cave-sys-zombie-check $argv; end
