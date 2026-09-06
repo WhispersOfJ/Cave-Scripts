@@ -109,8 +109,9 @@ else
 fi
 
 # --- Registry conformance: every row with a bash impl exists as cave-* ---
-# Rows without a stack-* source yet (de/backup/btrfs, built in M3) are skipped;
-# everything else must be defined in this bash port.
+# Rows without an implementation yet (de/backup, built later in M3) are
+# skipped; everything else must be defined in this bash port. btrfs landed
+# in M3 and is now enforced like the media families.
 log_info "Registry conformance (spec/functions.yaml rows → cave-* functions)..."
 reg_missing=0
 while IFS= read -r cave_name; do
@@ -123,7 +124,7 @@ done < <(python3 - "$REGISTRY" <<'PY'
 import sys, yaml
 reg = yaml.safe_load(open(sys.argv[1]))
 for f in reg['functions']:
-    if f['family'] not in ('de', 'backup', 'btrfs'):
+    if f['family'] not in ('de', 'backup'):
         print(f['name'])
 PY
 )
@@ -190,11 +191,26 @@ else
     failed=$((failed + alias_bad))
 fi
 
-# --- Alias tier: every cave-* command has exactly one stack-* forwarder ---
-log_info "Alias conformance (every cave-* command has a stack-* forwarder)..."
+# --- Alias tier: every cave-* command with a legacy name has its forwarder ---
+# Mirror of gen-aliases.sh's scope: families born as cave-* with no legacy
+# stack-* source (de/backup/btrfs) are exempt — D21 covers migrating names
+# that existed as stack-*; inventing new stack-* names would pollute the
+# legacy namespace. Everything else (media, core, sys) must forward.
+log_info "Alias conformance (every legacy-named cave-* command has a stack-* forwarder)..."
 missing_alias=0
 while IFS= read -r cave_name; do
     [ -n "$cave_name" ] || continue
+    family="$(python3 -c "
+import sys, yaml
+reg = yaml.safe_load(open('$REGISTRY'))
+for f in reg['functions']:
+    if f['name'] == '$cave_name':
+        print(f['family'])
+        break
+")"
+    case "$family" in
+        de|backup|btrfs) continue ;;
+    esac
     if ! grep -qE "^stack-.*\\(\\) \\{ ${cave_name} \"\\\$@\"; \\}" "$BASH_DIR/_aliases.sh"; then
         missing_alias=$((missing_alias + 1))
         log_error "cave-* command lacks a stack-* forwarder: $cave_name"
@@ -202,7 +218,7 @@ while IFS= read -r cave_name; do
 done < <(printf '%s\n' "${CAVE_CMDS[@]}")
 if [ "$missing_alias" -eq 0 ]; then
     passed=$((passed + 1))
-    log_success "every cave-* command has a stack-* forwarder (D21)"
+    log_success "every legacy-named cave-* command has a stack-* forwarder (D21)"
 else
     failed=$((failed + missing_alias))
 fi
@@ -585,7 +601,9 @@ for cmd in \
     cave-arr-queue-errors cave-arr-recently-added cave-arr-toggle-search \
     cave-container cave-cutoff-unmet cave-disk-reclaim cave-import-lists \
     cave-loop-candidates cave-loop-exclude cave-loop-unmonitor \
-    cave-radarr-prune cave-sonarr-prune cave-worktree; do
+    cave-radarr-prune cave-sonarr-prune cave-worktree \
+    cave-btrfs-snapshot cave-btrfs-subvol cave-btrfs-scrub \
+    cave-btrfs-balance cave-btrfs-snapper; do
     if printf '%s\n' "${CAVE_CMDS[@]}" | grep -qx "$cmd"; then
         run_guard "$cmd"
     fi
@@ -594,6 +612,77 @@ done
 # cave-restart-all prompts for confirmation; with no stdin it must decline.
 if printf '%s\n' "${CAVE_CMDS[@]}" | grep -qx cave-restart-all; then
     run_guard cave-restart-all
+fi
+
+# --- Btrfs tier (M3): dry-run echo-before-exec, /boot refusal, closed-stdin abort ---
+log_info "Btrfs tier (dry-run echo-before-exec, /boot refusal, closed-stdin abort)..."
+run_btrfs_dry() { # exact stdout of a CAVE_BTRFS_DRYRUN=1 invocation
+    timeout 20 bash -c "
+        STACK_COLOR=false
+        CAVE_BTRFS_DRYRUN=1
+        source '$BASH_DIR/cave-scripts.sh' >/dev/null 2>&1
+        $1
+    " </dev/null 2>&1
+}
+run_btrfs_live() { # no DRYRUN: closed stdin drives the confirm path
+    timeout 20 bash -c "
+        STACK_COLOR=false
+        source '$BASH_DIR/cave-scripts.sh' >/dev/null 2>&1
+        $1
+    " </dev/null 2>&1
+}
+run_btrfs_rc() { # sets BTRFS_OUT + BTRFS_RC (set -e-safe capture of a failing command)
+    BTRFS_OUT="$(timeout 20 bash -c "
+        STACK_COLOR=false
+        CAVE_BTRFS_DRYRUN=1
+        source '$BASH_DIR/cave-scripts.sh' >/dev/null 2>&1
+        $1
+    " </dev/null 2>&1)" && BTRFS_RC=0 || BTRFS_RC=$?
+}
+btrfs_expect() { # $1 label, $2 actual, $3 expected
+    if [ "$2" = "$3" ]; then
+        passed=$((passed + 1))
+        log_success "btrfs: $1"
+    else
+        failed=$((failed + 1))
+        log_error "btrfs: $1 (got: $2)"
+    fi
+}
+
+out="$(run_btrfs_dry 'cave-btrfs-scrub start --yes')"
+btrfs_expect "scrub dry-run echoes exact command" "$out" "+ sudo -n btrfs scrub start /"
+
+out="$(run_btrfs_dry 'cave-btrfs-balance start --yes')"
+btrfs_expect "balance dry-run echoes exact command" "$out" "+ sudo -n btrfs balance start -dusage=50 -musage=50 /"
+
+out="$(run_btrfs_dry 'cave-btrfs-snapshot create "suite probe"')"
+btrfs_expect "snapshot create dry-run echoes exact command" "$out" "+ sudo -n snapper -c home create --description suite probe"
+
+out="$(run_btrfs_live 'cave-btrfs-scrub start')" || true
+btrfs_expect "scrub aborts on closed stdin" "$out" "Start btrfs scrub on / (hours of IO)? [y/N] Aborted."
+
+out="$(run_btrfs_live 'cave-btrfs-snapshot create x')" || true
+btrfs_expect "snapshot create aborts on closed stdin" "$out" "Create @home snapshot 'x'? [y/N] Aborted."
+
+run_btrfs_rc 'cave-btrfs-subvol create /boot/grub'
+if [ "$BTRFS_RC" -eq 1 ] && printf '%s' "$BTRFS_OUT" | grep -q "Refusing to touch /boot"; then
+    passed=$((passed + 1)); log_success "btrfs: /boot refusal"
+else
+    failed=$((failed + 1)); log_error "btrfs: /boot refusal (rc=$BTRFS_RC, out: $BTRFS_OUT)"
+fi
+
+run_btrfs_rc 'cave-btrfs-scrub start --yes --turbo'
+if [ "$BTRFS_RC" -eq 1 ] && printf '%s' "$BTRFS_OUT" | grep -q "Unknown option: --turbo"; then
+    passed=$((passed + 1)); log_success "btrfs: scrub rejects unknown options even with --yes"
+else
+    failed=$((failed + 1)); log_error "btrfs: scrub unknown-option gate (rc=$BTRFS_RC, out: $BTRFS_OUT)"
+fi
+
+run_btrfs_rc 'cave-btrfs-snapshot delete abc'
+if [ "$BTRFS_RC" -eq 1 ] && printf '%s' "$BTRFS_OUT" | grep -q "must be numeric"; then
+    passed=$((passed + 1)); log_success "btrfs: snapshot delete numeric validation"
+else
+    failed=$((failed + 1)); log_error "btrfs: snapshot delete numeric validation (rc=$BTRFS_RC, out: $BTRFS_OUT)"
 fi
 
 # --- Summary ---

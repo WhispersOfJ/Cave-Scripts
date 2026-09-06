@@ -5,11 +5,11 @@ media stack, the desktop, and the host — implemented as **three parallel,
 hand-maintained ports: bash, zsh, and fish** with identical behaviour,
 output, and safety guarantees.
 
-> Status: **M2 (three shells) in progress** — bash and zsh ports are complete
-> (128 commands each); the fish port is being added on the same registry.
-> The library is being migrated out of `WhispersOfJ/thebearcave` per the plan
-> in that repo's `cave-scripts-spec.md` / `cave-scripts-plan.md` /
-> `cave-scripts-inventory.md`.
+> Status: **M3 in progress** — three shells complete (M2) plus the M3 btrfs
+> family (139 commands each, all three ports). Remaining M3: DE families and
+> the backup wrapper. The library is being migrated out of
+> `WhispersOfJ/thebearcave` per the plan in that repo's `cave-scripts-spec.md`
+> / `cave-scripts-plan.md` / `cave-scripts-inventory.md`.
 
 ## Layout
 
@@ -71,12 +71,25 @@ fish tests/fish/test_cave_scripts.fish           # fish suite
 tests/live/test_live_parity.sh                   # LIVE 3-shell parity (needs stack up)
 ```
 
-Each offline suite asserts: every file parses, the full 128-command surface
-loads, every `spec/functions.yaml` row exists (no orphans), the alias layer is
-complete and matches bash, completions are current (no drift), the guarded
-`docker` wrapper is present, and — the parity crown check — `cave-version`,
-`cave-help`, and the mocked API renderers produce **byte-identical output**
-across the bash and fish ports.
+Each offline suite asserts: every file parses, the full command surface
+loads, every implemented `spec/functions.yaml` row exists (no orphans), the
+legacy alias layer is complete and matches bash, completions are current (no
+drift), the guarded `docker` wrapper is present, and — the parity crown
+check — `cave-version`, `cave-help`, and the mocked API renderers produce
+**byte-identical output** across the bash and fish ports.
+
+### btrfs family (M3)
+
+`cave-btrfs-*` (11 commands × 3 ports): read-only info (`usage`,
+`subvolumes`, `device-stats`, `scrub-status`, `balance-status`, `qgroup`,
+`snapper list|status|diff`) and guarded actions (`snapshot
+create|delete`, `subvol create`, `scrub start [--yes]`, `balance start
+[--yes]`). Privileged probes use passwordless `sudo -n` (clear refusal
+otherwise). Mutations are **echo-before-exec** and honor
+`CAVE_BTRFS_DRYRUN=1`; scrub/balance target the fs root only (no path
+arg → `/boot` structurally unreachable). Each suite carries an offline
+btrfs tier asserting the exact echo lines, the closed-stdin aborts, and
+the refusals.
 
 The suites also pin the three defects the 2026-09-05 Demo 2 live walkthrough
 caught: fish `__helpers.fish` must default `STACK_API_TIMEOUT_*`, zsh must
