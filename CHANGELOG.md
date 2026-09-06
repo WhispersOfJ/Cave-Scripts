@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.4.0...v0.5.0) (2026-09-05)
+
+
+### Features
+
+* port the cave-* library to fish with generated aliases + completions (M2) ([#7](https://github.com/WhispersOfJ/Cave-Scripts/issues/7)) ([8f90dc1](https://github.com/WhispersOfJ/Cave-Scripts/commit/8f90dc176c9d1ee84cc1f2d2c27d9c7bffefb728))
+
 ## [0.4.0](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.3.0...v0.4.0) (2026-09-05)
 
 
