@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.5.1...v0.6.0) (2026-09-06)
+
+
+### Features
+
+* port the btrfs family to all three shells (M3 task 3) ([#10](https://github.com/WhispersOfJ/Cave-Scripts/issues/10)) ([0428294](https://github.com/WhispersOfJ/Cave-Scripts/commit/04282949dcbaaeeb32ab156a6cacc359cfea1e3d))
+
 ## [0.5.1](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.5.0...v0.5.1) (2026-09-06)
 
 
