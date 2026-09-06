@@ -302,6 +302,59 @@ else
     log_error "guarded docker() wrapper is missing (loader did not define it)"
 fi
 
+# --- Demo-2 regression: zsh must never assign `path` (PATH-tied array) ---
+# The 2026-09-05 live demo caught `local path="$2"` in __arr_api/__plex_api/
+# __seerr_api/__nzbdav_api: in zsh `path` is tied to $PATH, so localizing it
+# with an API path clobbered PATH and `command curl` died with "command not
+# found" mid-call-chain — invisible to mocked offline suites.
+# Gate 1 (static): no zsh file declares/assigns `path` as a local scalar.
+log_info "Demo-2 regression: no zsh file assigns the PATH-tied 'path' variable..."
+# Anchored on the declaration keyword so comment lines don't trip it; the
+# tail class catches `path=`, bare `path` in the var list, and `path;`.
+path_pat='^[[:space:]]*(local|typeset|declare)([[:space:]]+[^#]*[[:space:]])?[[:space:]]*\bpath([[:space:]=;]|$)'
+path_hits=0
+zsh_file_has_path_assign() { grep -qE "$path_pat" "$1" 2>/dev/null; }
+for f in "$ZSH_DIR"/*.zsh "$ZSH_DIR"/functions/*.zsh "$ZSH_DIR"/scripts/*.sh(N); do
+    if zsh_file_has_path_assign "$f"; then
+        path_hits=$((path_hits + 1))
+        log_error "PATH-tied assignment in $f:"
+        grep -nE "$path_pat" "$f" | sed 's/^/         /'
+    fi
+done
+if [ "$path_hits" -eq 0 ]; then
+    passed=$((passed + 1))
+    log_success "no local/typeset 'path=' assignments in the zsh tree"
+else
+    failed=$((failed + 1))
+    log_error "$path_hits zsh file(s) assign the PATH-tied 'path' variable"
+fi
+# Gate 2 (functional): inside a real __plex_api call chain, external commands
+# must stay resolvable AND the URL must reach curl intact. Run via a temp
+# script to avoid nested-quoting mangling of "$@".
+log_info "Demo-2 regression: __plex_api call chain keeps PATH + URL intact..."
+chain_script=$(mktemp /tmp/cave_chain.XXXXXX.zsh)
+cat > "$chain_script" <<'CHAIN'
+source "$1/functions/__helpers.zsh"
+__stack_curl() { command -v curl >/dev/null 2>&1 && print PATH-OK; print -r -- "$@"; }
+__plex_api GET /library/sections
+CHAIN
+chain_out="$(zsh -f "$chain_script" "$ZSH_DIR" 2>&1)"
+rm -f "$chain_script"
+chain_url="${chain_out##*$'\n'}"
+# URL host-agnostic: the chain may target PLEX_URL from the stack .env
+# (e.g. http://192.168.x.x:32400) or the localhost default — either is fine;
+# what must hold is scheme + port + path arriving intact at __stack_curl.
+if print -r -- "$chain_out" | grep -q '^PATH-OK$' \
+   && print -r -- "$chain_out" | grep -q -- '-H Accept: application/json' \
+   && print -r -- "$chain_url" | grep -Eq 'http://[^ ]+:32400/library/sections'; then
+    passed=$((passed + 1))
+    log_success "__stack_curl sees PATH-resolvable commands and the correct URL"
+else
+    failed=$((failed + 1))
+    log_error "call chain broken (PATH clobber or URL mangled):"
+    print -r -- "$chain_out" | head -4 | sed 's/^/         /'
+fi
+
 # --- Completions: compdef parses, registers both spellings, no drift ---
 log_info "Completion checks (generated compdef parses, registers, is current)..."
 COMP_FILE="$ZSH_DIR/completions/_cave-cmd"

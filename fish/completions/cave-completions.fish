@@ -28,55 +28,55 @@ function __cave_arg_pos --description '0-based index of the argument being compl
 end
 
 # cave-activity-feed
-complete -f  -c cave-activity-feed -o -c stack-activity-feed -a '(__cave_complete "cave-activity-feed" (__cave_arg_pos))'
+complete -f  -c cave-activity-feed -c stack-activity-feed -k -a '(__cave_complete "cave-activity-feed" (__cave_arg_pos))'
 
 # cave-arr
-complete -f  -c cave-arr -o -c stack-arr -a '(__cave_complete "cave-arr" (__cave_arg_pos))'
+complete -f  -c cave-arr -c stack-arr -k -a '(__cave_complete "cave-arr" (__cave_arg_pos))'
 
 # cave-arr-backlog
-complete -f  -c cave-arr-backlog -o -c stack-arr-backlog -a '(__cave_complete "cave-arr-backlog" (__cave_arg_pos))'
+complete -f  -c cave-arr-backlog -c stack-arr-backlog -k -a '(__cave_complete "cave-arr-backlog" (__cave_arg_pos))'
 
 # cave-arr-blocklist
-complete -f  -c cave-arr-blocklist -o -c stack-arr-blocklist -a '(__cave_complete "cave-arr-blocklist" (__cave_arg_pos))'
+complete -f  -c cave-arr-blocklist -c stack-arr-blocklist -k -a '(__cave_complete "cave-arr-blocklist" (__cave_arg_pos))'
 
 # cave-arr-clear-blocklist
-complete -f  -c cave-arr-clear-blocklist -o -c stack-arr-clear-blocklist -a '(__cave_complete "cave-arr-clear-blocklist" (__cave_arg_pos))'
+complete -f  -c cave-arr-clear-blocklist -c stack-arr-clear-blocklist -k -a '(__cave_complete "cave-arr-clear-blocklist" (__cave_arg_pos))'
 
 # cave-arr-import
-complete -f  -c cave-arr-import -o -c stack-arr-import -a '(__cave_complete "cave-arr-import" (__cave_arg_pos))'
+complete -f  -c cave-arr-import -c stack-arr-import -k -a '(__cave_complete "cave-arr-import" (__cave_arg_pos))'
 
 # cave-arr-import-all
-complete -f  -c cave-arr-import-all -o -c stack-arr-import-all -a '(__cave_complete "cave-arr-import-all" (__cave_arg_pos))'
+complete -f  -c cave-arr-import-all -c stack-arr-import-all -k -a '(__cave_complete "cave-arr-import-all" (__cave_arg_pos))'
 
 # cave-arr-import-candidates
-complete -f  -c cave-arr-import-candidates -o -c stack-arr-import-candidates -a '(__cave_complete "cave-arr-import-candidates" (__cave_arg_pos))'
+complete -f  -c cave-arr-import-candidates -c stack-arr-import-candidates -k -a '(__cave_complete "cave-arr-import-candidates" (__cave_arg_pos))'
 
 # cave-arr-import-starvation
-complete -f  -c cave-arr-import-starvation -o -c stack-arr-import-starvation -a '(__cave_complete "cave-arr-import-starvation" (__cave_arg_pos))'
+complete -f  -c cave-arr-import-starvation -c stack-arr-import-starvation -k -a '(__cave_complete "cave-arr-import-starvation" (__cave_arg_pos))'
 
 # cave-arr-logs
-complete -f  -c cave-arr-logs -o -c stack-arr-logs -a '(__cave_complete "cave-arr-logs" (__cave_arg_pos))'
+complete -f  -c cave-arr-logs -c stack-arr-logs -k -a '(__cave_complete "cave-arr-logs" (__cave_arg_pos))'
 
 # cave-arr-missing-aired
-complete -f  -c cave-arr-missing-aired -o -c stack-arr-missing-aired -a '(__cave_complete "cave-arr-missing-aired" (__cave_arg_pos))'
+complete -f  -c cave-arr-missing-aired -c stack-arr-missing-aired -k -a '(__cave_complete "cave-arr-missing-aired" (__cave_arg_pos))'
 
 # cave-arr-queue-errors
-complete -f  -c cave-arr-queue-errors -o -c stack-arr-queue-errors -a '(__cave_complete "cave-arr-queue-errors" (__cave_arg_pos))'
+complete -f  -c cave-arr-queue-errors -c stack-arr-queue-errors -k -a '(__cave_complete "cave-arr-queue-errors" (__cave_arg_pos))'
 
 # cave-arr-recently-added
-complete -f  -c cave-arr-recently-added -o -c stack-arr-recently-added -a '(__cave_complete "cave-arr-recently-added" (__cave_arg_pos))'
+complete -f  -c cave-arr-recently-added -c stack-arr-recently-added -k -a '(__cave_complete "cave-arr-recently-added" (__cave_arg_pos))'
 
 # cave-arr-toggle-search
-complete -f  -c cave-arr-toggle-search -o -c stack-arr-toggle-search -a '(__cave_complete "cave-arr-toggle-search" (__cave_arg_pos))'
+complete -f  -c cave-arr-toggle-search -c stack-arr-toggle-search -k -a '(__cave_complete "cave-arr-toggle-search" (__cave_arg_pos))'
 
 # cave-arrival-notify
-complete -f  -c cave-arrival-notify -o -c stack-arrival-notify -a '(__cave_complete "cave-arrival-notify" (__cave_arg_pos))'
+complete -f  -c cave-arrival-notify -c stack-arrival-notify -k -a '(__cave_complete "cave-arrival-notify" (__cave_arg_pos))'
 
 # cave-audit-residue
-complete -f  -c cave-audit-residue -o -c stack-audit-residue -a '(__cave_complete "cave-audit-residue" (__cave_arg_pos))'
+complete -f  -c cave-audit-residue -c stack-audit-residue -k -a '(__cave_complete "cave-audit-residue" (__cave_arg_pos))'
 
 # cave-backlog-status
-complete -f  -c cave-backlog-status -o -c stack-backlog-status -a '(__cave_complete "cave-backlog-status" (__cave_arg_pos))'
+complete -f  -c cave-backlog-status -c stack-backlog-status -k -a '(__cave_complete "cave-backlog-status" (__cave_arg_pos))'
 
 # cave-btrfs-balance
 complete -f  -c cave-btrfs-balance -a '(__cave_complete "cave-btrfs-balance" (__cave_arg_pos))'
@@ -112,337 +112,337 @@ complete -f  -c cave-btrfs-subvolumes -a '(__cave_complete "cave-btrfs-subvolume
 complete -f  -c cave-btrfs-usage -a '(__cave_complete "cave-btrfs-usage" (__cave_arg_pos))'
 
 # cave-claude-full-backup
-complete -f  -c cave-claude-full-backup -o -c stack-claude-full-backup -a '(__cave_complete "cave-claude-full-backup" (__cave_arg_pos))'
+complete -f  -c cave-claude-full-backup -c stack-claude-full-backup -k -a '(__cave_complete "cave-claude-full-backup" (__cave_arg_pos))'
 
 # cave-command-queue-summary
-complete -f  -c cave-command-queue-summary -o -c stack-command-queue-summary -a '(__cave_complete "cave-command-queue-summary" (__cave_arg_pos))'
+complete -f  -c cave-command-queue-summary -c stack-command-queue-summary -k -a '(__cave_complete "cave-command-queue-summary" (__cave_arg_pos))'
 
 # cave-config-drift
-complete -f  -c cave-config-drift -o -c stack-config-drift -a '(__cave_complete "cave-config-drift" (__cave_arg_pos))'
+complete -f  -c cave-config-drift -c stack-config-drift -k -a '(__cave_complete "cave-config-drift" (__cave_arg_pos))'
 
 # cave-container
-complete -f  -c cave-container -o -c stack-container -a '(__cave_complete "cave-container" (__cave_arg_pos))'
+complete -f  -c cave-container -c stack-container -k -a '(__cave_complete "cave-container" (__cave_arg_pos))'
 
 # cave-cutoff-unmet
-complete -f  -c cave-cutoff-unmet -o -c stack-cutoff-unmet -a '(__cave_complete "cave-cutoff-unmet" (__cave_arg_pos))'
+complete -f  -c cave-cutoff-unmet -c stack-cutoff-unmet -k -a '(__cave_complete "cave-cutoff-unmet" (__cave_arg_pos))'
 
 # cave-disk-config-sizes
-complete -f  -c cave-disk-config-sizes -o -c stack-disk-config-sizes -a '(__cave_complete "cave-disk-config-sizes" (__cave_arg_pos))'
+complete -f  -c cave-disk-config-sizes -c stack-disk-config-sizes -k -a '(__cave_complete "cave-disk-config-sizes" (__cave_arg_pos))'
 
 # cave-disk-reclaim
-complete -f  -c cave-disk-reclaim -o -c stack-disk-reclaim -a '(__cave_complete "cave-disk-reclaim" (__cave_arg_pos))'
+complete -f  -c cave-disk-reclaim -c stack-disk-reclaim -k -a '(__cave_complete "cave-disk-reclaim" (__cave_arg_pos))'
 
 # cave-docker-disk-usage
-complete -f  -c cave-docker-disk-usage -o -c stack-docker-disk-usage -a '(__cave_complete "cave-docker-disk-usage" (__cave_arg_pos))'
+complete -f  -c cave-docker-disk-usage -c stack-docker-disk-usage -k -a '(__cave_complete "cave-docker-disk-usage" (__cave_arg_pos))'
 
 # cave-help
-complete -f  -c cave-help -o -c stack-help -a '(__cave_complete "cave-help" (__cave_arg_pos))'
+complete -f  -c cave-help -c stack-help -k -a '(__cave_complete "cave-help" (__cave_arg_pos))'
 
 # cave-image-check
-complete -f  -c cave-image-check -o -c stack-image-check -a '(__cave_complete "cave-image-check" (__cave_arg_pos))'
+complete -f  -c cave-image-check -c stack-image-check -k -a '(__cave_complete "cave-image-check" (__cave_arg_pos))'
 
 # cave-import-lists
-complete -f  -c cave-import-lists -o -c stack-import-lists -a '(__cave_complete "cave-import-lists" (__cave_arg_pos))'
+complete -f  -c cave-import-lists -c stack-import-lists -k -a '(__cave_complete "cave-import-lists" (__cave_arg_pos))'
 
 # cave-letterboxd-history
-complete -f  -c cave-letterboxd-history -o -c stack-letterboxd-history -a '(__cave_complete "cave-letterboxd-history" (__cave_arg_pos))'
+complete -f  -c cave-letterboxd-history -c stack-letterboxd-history -k -a '(__cave_complete "cave-letterboxd-history" (__cave_arg_pos))'
 
 # cave-letterboxd-import
-complete -f  -c cave-letterboxd-import -o -c stack-letterboxd-import -a '(__cave_complete "cave-letterboxd-import" (__cave_arg_pos))'
+complete -f  -c cave-letterboxd-import -c stack-letterboxd-import -k -a '(__cave_complete "cave-letterboxd-import" (__cave_arg_pos))'
 
 # cave-letterboxd-track
-complete -f  -c cave-letterboxd-track -o -c stack-letterboxd-track -a '(__cave_complete "cave-letterboxd-track" (__cave_arg_pos))'
+complete -f  -c cave-letterboxd-track -c stack-letterboxd-track -k -a '(__cave_complete "cave-letterboxd-track" (__cave_arg_pos))'
 
 # cave-letterboxd-tracked
-complete -f  -c cave-letterboxd-tracked -o -c stack-letterboxd-tracked -a '(__cave_complete "cave-letterboxd-tracked" (__cave_arg_pos))'
+complete -f  -c cave-letterboxd-tracked -c stack-letterboxd-tracked -k -a '(__cave_complete "cave-letterboxd-tracked" (__cave_arg_pos))'
 
 # cave-letterboxd-untrack
-complete -f  -c cave-letterboxd-untrack -o -c stack-letterboxd-untrack -a '(__cave_complete "cave-letterboxd-untrack" (__cave_arg_pos))'
+complete -f  -c cave-letterboxd-untrack -c stack-letterboxd-untrack -k -a '(__cave_complete "cave-letterboxd-untrack" (__cave_arg_pos))'
 
 # cave-log-levels
-complete -f  -c cave-log-levels -o -c stack-log-levels -a '(__cave_complete "cave-log-levels" (__cave_arg_pos))'
+complete -f  -c cave-log-levels -c stack-log-levels -k -a '(__cave_complete "cave-log-levels" (__cave_arg_pos))'
 
 # cave-loop-candidates
-complete -f  -c cave-loop-candidates -o -c stack-loop-candidates -a '(__cave_complete "cave-loop-candidates" (__cave_arg_pos))'
+complete -f  -c cave-loop-candidates -c stack-loop-candidates -k -a '(__cave_complete "cave-loop-candidates" (__cave_arg_pos))'
 
 # cave-loop-exclude
-complete -f  -c cave-loop-exclude -o -c stack-loop-exclude -a '(__cave_complete "cave-loop-exclude" (__cave_arg_pos))'
+complete -f  -c cave-loop-exclude -c stack-loop-exclude -k -a '(__cave_complete "cave-loop-exclude" (__cave_arg_pos))'
 
 # cave-loop-unmonitor
-complete -f  -c cave-loop-unmonitor -o -c stack-loop-unmonitor -a '(__cave_complete "cave-loop-unmonitor" (__cave_arg_pos))'
+complete -f  -c cave-loop-unmonitor -c stack-loop-unmonitor -k -a '(__cave_complete "cave-loop-unmonitor" (__cave_arg_pos))'
 
 # cave-maintenance-digest
-complete -f  -c cave-maintenance-digest -o -c stack-maintenance-digest -a '(__cave_complete "cave-maintenance-digest" (__cave_arg_pos))'
+complete -f  -c cave-maintenance-digest -c stack-maintenance-digest -k -a '(__cave_complete "cave-maintenance-digest" (__cave_arg_pos))'
 
 # cave-mdblist-history
-complete -f  -c cave-mdblist-history -o -c stack-mdblist-history -a '(__cave_complete "cave-mdblist-history" (__cave_arg_pos))'
+complete -f  -c cave-mdblist-history -c stack-mdblist-history -k -a '(__cave_complete "cave-mdblist-history" (__cave_arg_pos))'
 
 # cave-mdblist-import
-complete -f  -c cave-mdblist-import -o -c stack-mdblist-import -a '(__cave_complete "cave-mdblist-import" (__cave_arg_pos))'
+complete -f  -c cave-mdblist-import -c stack-mdblist-import -k -a '(__cave_complete "cave-mdblist-import" (__cave_arg_pos))'
 
 # cave-mdblist-track
-complete -f  -c cave-mdblist-track -o -c stack-mdblist-track -a '(__cave_complete "cave-mdblist-track" (__cave_arg_pos))'
+complete -f  -c cave-mdblist-track -c stack-mdblist-track -k -a '(__cave_complete "cave-mdblist-track" (__cave_arg_pos))'
 
 # cave-mdblist-tracked
-complete -f  -c cave-mdblist-tracked -o -c stack-mdblist-tracked -a '(__cave_complete "cave-mdblist-tracked" (__cave_arg_pos))'
+complete -f  -c cave-mdblist-tracked -c stack-mdblist-tracked -k -a '(__cave_complete "cave-mdblist-tracked" (__cave_arg_pos))'
 
 # cave-mdblist-untrack
-complete -f  -c cave-mdblist-untrack -o -c stack-mdblist-untrack -a '(__cave_complete "cave-mdblist-untrack" (__cave_arg_pos))'
+complete -f  -c cave-mdblist-untrack -c stack-mdblist-untrack -k -a '(__cave_complete "cave-mdblist-untrack" (__cave_arg_pos))'
 
 # cave-mount-health
-complete -f  -c cave-mount-health -o -c stack-mount-health -a '(__cave_complete "cave-mount-health" (__cave_arg_pos))'
+complete -f  -c cave-mount-health -c stack-mount-health -k -a '(__cave_complete "cave-mount-health" (__cave_arg_pos))'
 
 # cave-notify-test
-complete -f  -c cave-notify-test -o -c stack-notify-test -a '(__cave_complete "cave-notify-test" (__cave_arg_pos))'
+complete -f  -c cave-notify-test -c stack-notify-test -k -a '(__cave_complete "cave-notify-test" (__cave_arg_pos))'
 
 # cave-nzbdav-dedup-check
-complete -f  -c cave-nzbdav-dedup-check -o -c stack-nzbdav-dedup-check -a '(__cave_complete "cave-nzbdav-dedup-check" (__cave_arg_pos))'
+complete -f  -c cave-nzbdav-dedup-check -c stack-nzbdav-dedup-check -k -a '(__cave_complete "cave-nzbdav-dedup-check" (__cave_arg_pos))'
 
 # cave-nzbdav-delete-failures
-complete -f  -c cave-nzbdav-delete-failures -o -c stack-nzbdav-delete-failures -a '(__cave_complete "cave-nzbdav-delete-failures" (__cave_arg_pos))'
+complete -f  -c cave-nzbdav-delete-failures -c stack-nzbdav-delete-failures -k -a '(__cave_complete "cave-nzbdav-delete-failures" (__cave_arg_pos))'
 
 # cave-nzbdav-history
-complete -f  -c cave-nzbdav-history -o -c stack-nzbdav-history -a '(__cave_complete "cave-nzbdav-history" (__cave_arg_pos))'
+complete -f  -c cave-nzbdav-history -c stack-nzbdav-history -k -a '(__cave_complete "cave-nzbdav-history" (__cave_arg_pos))'
 
 # cave-nzbdav-queue
-complete -f  -c cave-nzbdav-queue -o -c stack-nzbdav-queue -a '(__cave_complete "cave-nzbdav-queue" (__cave_arg_pos))'
+complete -f  -c cave-nzbdav-queue -c stack-nzbdav-queue -k -a '(__cave_complete "cave-nzbdav-queue" (__cave_arg_pos))'
 
 # cave-nzbdav-stats
-complete -f  -c cave-nzbdav-stats -o -c stack-nzbdav-stats -a '(__cave_complete "cave-nzbdav-stats" (__cave_arg_pos))'
+complete -f  -c cave-nzbdav-stats -c stack-nzbdav-stats -k -a '(__cave_complete "cave-nzbdav-stats" (__cave_arg_pos))'
 
 # cave-oom-check
-complete -f  -c cave-oom-check -o -c stack-oom-check -a '(__cave_complete "cave-oom-check" (__cave_arg_pos))'
+complete -f  -c cave-oom-check -c stack-oom-check -k -a '(__cave_complete "cave-oom-check" (__cave_arg_pos))'
 
 # cave-perms-check
-complete -f  -c cave-perms-check -o -c stack-perms-check -a '(__cave_complete "cave-perms-check" (__cave_arg_pos))'
+complete -f  -c cave-perms-check -c stack-perms-check -k -a '(__cave_complete "cave-perms-check" (__cave_arg_pos))'
 
 # cave-plex
-complete -f  -c cave-plex -o -c stack-plex -a '(__cave_complete "cave-plex" (__cave_arg_pos))'
+complete -f  -c cave-plex -c stack-plex -k -a '(__cave_complete "cave-plex" (__cave_arg_pos))'
 
 # cave-plex-analyze
-complete -f  -c cave-plex-analyze -o -c stack-plex-analyze -a '(__cave_complete "cave-plex-analyze" (__cave_arg_pos))'
+complete -f  -c cave-plex-analyze -c stack-plex-analyze -k -a '(__cave_complete "cave-plex-analyze" (__cave_arg_pos))'
 
 # cave-plex-automatic-updates
-complete -f  -c cave-plex-automatic-updates -o -c stack-plex-automatic-updates -a '(__cave_complete "cave-plex-automatic-updates" (__cave_arg_pos))'
+complete -f  -c cave-plex-automatic-updates -c stack-plex-automatic-updates -k -a '(__cave_complete "cave-plex-automatic-updates" (__cave_arg_pos))'
 
 # cave-plex-backup-database
-complete -f  -c cave-plex-backup-database -o -c stack-plex-backup-database -a '(__cave_complete "cave-plex-backup-database" (__cave_arg_pos))'
+complete -f  -c cave-plex-backup-database -c stack-plex-backup-database -k -a '(__cave_complete "cave-plex-backup-database" (__cave_arg_pos))'
 
 # cave-plex-butler
-complete -f  -c cave-plex-butler -o -c stack-plex-butler -a '(__cave_complete "cave-plex-butler" (__cave_arg_pos))'
+complete -f  -c cave-plex-butler -c stack-plex-butler -k -a '(__cave_complete "cave-plex-butler" (__cave_arg_pos))'
 
 # cave-plex-butler-all
-complete -f  -c cave-plex-butler-all -o -c stack-plex-butler-all -a '(__cave_complete "cave-plex-butler-all" (__cave_arg_pos))'
+complete -f  -c cave-plex-butler-all -c stack-plex-butler-all -k -a '(__cave_complete "cave-plex-butler-all" (__cave_arg_pos))'
 
 # cave-plex-clean-cache-files
-complete -f  -c cave-plex-clean-cache-files -o -c stack-plex-clean-cache-files -a '(__cave_complete "cave-plex-clean-cache-files" (__cave_arg_pos))'
+complete -f  -c cave-plex-clean-cache-files -c stack-plex-clean-cache-files -k -a '(__cave_complete "cave-plex-clean-cache-files" (__cave_arg_pos))'
 
 # cave-plex-clean-log-files
-complete -f  -c cave-plex-clean-log-files -o -c stack-plex-clean-log-files -a '(__cave_complete "cave-plex-clean-log-files" (__cave_arg_pos))'
+complete -f  -c cave-plex-clean-log-files -c stack-plex-clean-log-files -k -a '(__cave_complete "cave-plex-clean-log-files" (__cave_arg_pos))'
 
 # cave-plex-deep-media-analysis
-complete -f  -c cave-plex-deep-media-analysis -o -c stack-plex-deep-media-analysis -a '(__cave_complete "cave-plex-deep-media-analysis" (__cave_arg_pos))'
+complete -f  -c cave-plex-deep-media-analysis -c stack-plex-deep-media-analysis -k -a '(__cave_complete "cave-plex-deep-media-analysis" (__cave_arg_pos))'
 
 # cave-plex-duplicates
-complete -f  -c cave-plex-duplicates -o -c stack-plex-duplicates -a '(__cave_complete "cave-plex-duplicates" (__cave_arg_pos))'
+complete -f  -c cave-plex-duplicates -c stack-plex-duplicates -k -a '(__cave_complete "cave-plex-duplicates" (__cave_arg_pos))'
 
 # cave-plex-empty-trash
-complete -f  -c cave-plex-empty-trash -o -c stack-plex-empty-trash -a '(__cave_complete "cave-plex-empty-trash" (__cave_arg_pos))'
+complete -f  -c cave-plex-empty-trash -c stack-plex-empty-trash -k -a '(__cave_complete "cave-plex-empty-trash" (__cave_arg_pos))'
 
 # cave-plex-garbage-collect-blobs
-complete -f  -c cave-plex-garbage-collect-blobs -o -c stack-plex-garbage-collect-blobs -a '(__cave_complete "cave-plex-garbage-collect-blobs" (__cave_arg_pos))'
+complete -f  -c cave-plex-garbage-collect-blobs -c stack-plex-garbage-collect-blobs -k -a '(__cave_complete "cave-plex-garbage-collect-blobs" (__cave_arg_pos))'
 
 # cave-plex-garbage-collect-media
-complete -f  -c cave-plex-garbage-collect-media -o -c stack-plex-garbage-collect-media -a '(__cave_complete "cave-plex-garbage-collect-media" (__cave_arg_pos))'
+complete -f  -c cave-plex-garbage-collect-media -c stack-plex-garbage-collect-media -k -a '(__cave_complete "cave-plex-garbage-collect-media" (__cave_arg_pos))'
 
 # cave-plex-generate-ad-markers
-complete -f  -c cave-plex-generate-ad-markers -o -c stack-plex-generate-ad-markers -a '(__cave_complete "cave-plex-generate-ad-markers" (__cave_arg_pos))'
+complete -f  -c cave-plex-generate-ad-markers -c stack-plex-generate-ad-markers -k -a '(__cave_complete "cave-plex-generate-ad-markers" (__cave_arg_pos))'
 
 # cave-plex-generate-chapter-thumbs
-complete -f  -c cave-plex-generate-chapter-thumbs -o -c stack-plex-generate-chapter-thumbs -a '(__cave_complete "cave-plex-generate-chapter-thumbs" (__cave_arg_pos))'
+complete -f  -c cave-plex-generate-chapter-thumbs -c stack-plex-generate-chapter-thumbs -k -a '(__cave_complete "cave-plex-generate-chapter-thumbs" (__cave_arg_pos))'
 
 # cave-plex-generate-credits-markers
-complete -f  -c cave-plex-generate-credits-markers -o -c stack-plex-generate-credits-markers -a '(__cave_complete "cave-plex-generate-credits-markers" (__cave_arg_pos))'
+complete -f  -c cave-plex-generate-credits-markers -c stack-plex-generate-credits-markers -k -a '(__cave_complete "cave-plex-generate-credits-markers" (__cave_arg_pos))'
 
 # cave-plex-generate-intro-markers
-complete -f  -c cave-plex-generate-intro-markers -o -c stack-plex-generate-intro-markers -a '(__cave_complete "cave-plex-generate-intro-markers" (__cave_arg_pos))'
+complete -f  -c cave-plex-generate-intro-markers -c stack-plex-generate-intro-markers -k -a '(__cave_complete "cave-plex-generate-intro-markers" (__cave_arg_pos))'
 
 # cave-plex-generate-media-index
-complete -f  -c cave-plex-generate-media-index -o -c stack-plex-generate-media-index -a '(__cave_complete "cave-plex-generate-media-index" (__cave_arg_pos))'
+complete -f  -c cave-plex-generate-media-index -c stack-plex-generate-media-index -k -a '(__cave_complete "cave-plex-generate-media-index" (__cave_arg_pos))'
 
 # cave-plex-generate-voice-activity
-complete -f  -c cave-plex-generate-voice-activity -o -c stack-plex-generate-voice-activity -a '(__cave_complete "cave-plex-generate-voice-activity" (__cave_arg_pos))'
+complete -f  -c cave-plex-generate-voice-activity -c stack-plex-generate-voice-activity -k -a '(__cave_complete "cave-plex-generate-voice-activity" (__cave_arg_pos))'
 
 # cave-plex-image-clean
-complete -f  -c cave-plex-image-clean -o -c stack-plex-image-clean -a '(__cave_complete "cave-plex-image-clean" (__cave_arg_pos))'
+complete -f  -c cave-plex-image-clean -c stack-plex-image-clean -k -a '(__cave_complete "cave-plex-image-clean" (__cave_arg_pos))'
 
 # cave-plex-libraries
-complete -f  -c cave-plex-libraries -o -c stack-plex-libraries -a '(__cave_complete "cave-plex-libraries" (__cave_arg_pos))'
+complete -f  -c cave-plex-libraries -c stack-plex-libraries -k -a '(__cave_complete "cave-plex-libraries" (__cave_arg_pos))'
 
 # cave-plex-loudness-analysis
-complete -f  -c cave-plex-loudness-analysis -o -c stack-plex-loudness-analysis -a '(__cave_complete "cave-plex-loudness-analysis" (__cave_arg_pos))'
+complete -f  -c cave-plex-loudness-analysis -c stack-plex-loudness-analysis -k -a '(__cave_complete "cave-plex-loudness-analysis" (__cave_arg_pos))'
 
 # cave-plex-markers
-complete -f  -c cave-plex-markers -o -c stack-plex-markers -a '(__cave_complete "cave-plex-markers" (__cave_arg_pos))'
+complete -f  -c cave-plex-markers -c stack-plex-markers -k -a '(__cave_complete "cave-plex-markers" (__cave_arg_pos))'
 
 # cave-plex-music-analysis
-complete -f  -c cave-plex-music-analysis -o -c stack-plex-music-analysis -a '(__cave_complete "cave-plex-music-analysis" (__cave_arg_pos))'
+complete -f  -c cave-plex-music-analysis -c stack-plex-music-analysis -k -a '(__cave_complete "cave-plex-music-analysis" (__cave_arg_pos))'
 
 # cave-plex-process-assets
-complete -f  -c cave-plex-process-assets -o -c stack-plex-process-assets -a '(__cave_complete "cave-plex-process-assets" (__cave_arg_pos))'
+complete -f  -c cave-plex-process-assets -c stack-plex-process-assets -k -a '(__cave_complete "cave-plex-process-assets" (__cave_arg_pos))'
 
 # cave-plex-recently-added
-complete -f  -c cave-plex-recently-added -o -c stack-plex-recently-added -a '(__cave_complete "cave-plex-recently-added" (__cave_arg_pos))'
+complete -f  -c cave-plex-recently-added -c stack-plex-recently-added -k -a '(__cave_complete "cave-plex-recently-added" (__cave_arg_pos))'
 
 # cave-plex-refresh-epg
-complete -f  -c cave-plex-refresh-epg -o -c stack-plex-refresh-epg -a '(__cave_complete "cave-plex-refresh-epg" (__cave_arg_pos))'
+complete -f  -c cave-plex-refresh-epg -c stack-plex-refresh-epg -k -a '(__cave_complete "cave-plex-refresh-epg" (__cave_arg_pos))'
 
 # cave-plex-refresh-libraries
-complete -f  -c cave-plex-refresh-libraries -o -c stack-plex-refresh-libraries -a '(__cave_complete "cave-plex-refresh-libraries" (__cave_arg_pos))'
+complete -f  -c cave-plex-refresh-libraries -c stack-plex-refresh-libraries -k -a '(__cave_complete "cave-plex-refresh-libraries" (__cave_arg_pos))'
 
 # cave-plex-refresh-local-media
-complete -f  -c cave-plex-refresh-local-media -o -c stack-plex-refresh-local-media -a '(__cave_complete "cave-plex-refresh-local-media" (__cave_arg_pos))'
+complete -f  -c cave-plex-refresh-local-media -c stack-plex-refresh-local-media -k -a '(__cave_complete "cave-plex-refresh-local-media" (__cave_arg_pos))'
 
 # cave-plex-sessions
-complete -f  -c cave-plex-sessions -o -c stack-plex-sessions -a '(__cave_complete "cave-plex-sessions" (__cave_arg_pos))'
+complete -f  -c cave-plex-sessions -c stack-plex-sessions -k -a '(__cave_complete "cave-plex-sessions" (__cave_arg_pos))'
 
 # cave-plex-updates
-complete -f  -c cave-plex-updates -o -c stack-plex-updates -a '(__cave_complete "cave-plex-updates" (__cave_arg_pos))'
+complete -f  -c cave-plex-updates -c stack-plex-updates -k -a '(__cave_complete "cave-plex-updates" (__cave_arg_pos))'
 
 # cave-plex-upgrade-media-analysis
-complete -f  -c cave-plex-upgrade-media-analysis -o -c stack-plex-upgrade-media-analysis -a '(__cave_complete "cave-plex-upgrade-media-analysis" (__cave_arg_pos))'
+complete -f  -c cave-plex-upgrade-media-analysis -c stack-plex-upgrade-media-analysis -k -a '(__cave_complete "cave-plex-upgrade-media-analysis" (__cave_arg_pos))'
 
 # cave-prowlarr-indexers
-complete -f  -c cave-prowlarr-indexers -o -c stack-prowlarr-indexers -a '(__cave_complete "cave-prowlarr-indexers" (__cave_arg_pos))'
+complete -f  -c cave-prowlarr-indexers -c stack-prowlarr-indexers -k -a '(__cave_complete "cave-prowlarr-indexers" (__cave_arg_pos))'
 
 # cave-queue-autofix
-complete -f  -c cave-queue-autofix -o -c stack-queue-autofix -a '(__cave_complete "cave-queue-autofix" (__cave_arg_pos))'
+complete -f  -c cave-queue-autofix -c stack-queue-autofix -k -a '(__cave_complete "cave-queue-autofix" (__cave_arg_pos))'
 
 # cave-queue-status
-complete -f  -c cave-queue-status -o -c stack-queue-status -a '(__cave_complete "cave-queue-status" (__cave_arg_pos))'
+complete -f  -c cave-queue-status -c stack-queue-status -k -a '(__cave_complete "cave-queue-status" (__cave_arg_pos))'
 
 # cave-radarr-health
-complete -f  -c cave-radarr-health -o -c stack-radarr-health -a '(__cave_complete "cave-radarr-health" (__cave_arg_pos))'
+complete -f  -c cave-radarr-health -c stack-radarr-health -k -a '(__cave_complete "cave-radarr-health" (__cave_arg_pos))'
 
 # cave-radarr-prune
-complete -f  -c cave-radarr-prune -o -c stack-radarr-prune -a '(__cave_complete "cave-radarr-prune" (__cave_arg_pos))'
+complete -f  -c cave-radarr-prune -c stack-radarr-prune -k -a '(__cave_complete "cave-radarr-prune" (__cave_arg_pos))'
 
 # cave-rating-imdb
-complete -f  -c cave-rating-imdb -o -c stack-rating-imdb -a '(__cave_complete "cave-rating-imdb" (__cave_arg_pos))'
+complete -f  -c cave-rating-imdb -c stack-rating-imdb -k -a '(__cave_complete "cave-rating-imdb" (__cave_arg_pos))'
 
 # cave-rating-mdblist
-complete -f  -c cave-rating-mdblist -o -c stack-rating-mdblist -a '(__cave_complete "cave-rating-mdblist" (__cave_arg_pos))'
+complete -f  -c cave-rating-mdblist -c stack-rating-mdblist -k -a '(__cave_complete "cave-rating-mdblist" (__cave_arg_pos))'
 
 # cave-recent
-complete -f  -c cave-recent -o -c stack-recent -a '(__cave_complete "cave-recent" (__cave_arg_pos))'
+complete -f  -c cave-recent -c stack-recent -k -a '(__cave_complete "cave-recent" (__cave_arg_pos))'
 
 # cave-requests
-complete -f  -c cave-requests -o -c stack-requests -a '(__cave_complete "cave-requests" (__cave_arg_pos))'
+complete -f  -c cave-requests -c stack-requests -k -a '(__cave_complete "cave-requests" (__cave_arg_pos))'
 
 # cave-resource-check
-complete -f  -c cave-resource-check -o -c stack-resource-check -a '(__cave_complete "cave-resource-check" (__cave_arg_pos))'
+complete -f  -c cave-resource-check -c stack-resource-check -k -a '(__cave_complete "cave-resource-check" (__cave_arg_pos))'
 
 # cave-restart-all
-complete -f  -c cave-restart-all -o -c stack-restart-all -a '(__cave_complete "cave-restart-all" (__cave_arg_pos))'
+complete -f  -c cave-restart-all -c stack-restart-all -k -a '(__cave_complete "cave-restart-all" (__cave_arg_pos))'
 
 # cave-seerr-requests
-complete -f  -c cave-seerr-requests -o -c stack-seerr-requests -a '(__cave_complete "cave-seerr-requests" (__cave_arg_pos))'
+complete -f  -c cave-seerr-requests -c stack-seerr-requests -k -a '(__cave_complete "cave-seerr-requests" (__cave_arg_pos))'
 
 # cave-sonarr-fix-episode-monitoring
-complete -f  -c cave-sonarr-fix-episode-monitoring -o -c stack-sonarr-fix-episode-monitoring -a '(__cave_complete "cave-sonarr-fix-episode-monitoring" (__cave_arg_pos))'
+complete -f  -c cave-sonarr-fix-episode-monitoring -c stack-sonarr-fix-episode-monitoring -k -a '(__cave_complete "cave-sonarr-fix-episode-monitoring" (__cave_arg_pos))'
 
 # cave-sonarr-prune
-complete -f  -c cave-sonarr-prune -o -c stack-sonarr-prune -a '(__cave_complete "cave-sonarr-prune" (__cave_arg_pos))'
+complete -f  -c cave-sonarr-prune -c stack-sonarr-prune -k -a '(__cave_complete "cave-sonarr-prune" (__cave_arg_pos))'
 
 # cave-status
-complete -f  -c cave-status -o -c stack-status -a '(__cave_complete "cave-status" (__cave_arg_pos))'
+complete -f  -c cave-status -c stack-status -k -a '(__cave_complete "cave-status" (__cave_arg_pos))'
 
 # cave-sys-aur-audit
-complete -f  -c cave-sys-aur-audit -o -c stack-aur-audit -a '(__cave_complete "cave-sys-aur-audit" (__cave_arg_pos))'
+complete -f  -c cave-sys-aur-audit -c stack-aur-audit -k -a '(__cave_complete "cave-sys-aur-audit" (__cave_arg_pos))'
 
 # cave-sys-claude-home
-complete -f  -c cave-sys-claude-home -o -c stack-claude-home -a '(__cave_complete "cave-sys-claude-home" (__cave_arg_pos))'
+complete -f  -c cave-sys-claude-home -c stack-claude-home -k -a '(__cave_complete "cave-sys-claude-home" (__cave_arg_pos))'
 
 # cave-sys-cron-list
-complete -f  -c cave-sys-cron-list -o -c stack-cron-list -a '(__cave_complete "cave-sys-cron-list" (__cave_arg_pos))'
+complete -f  -c cave-sys-cron-list -c stack-cron-list -k -a '(__cave_complete "cave-sys-cron-list" (__cave_arg_pos))'
 
 # cave-sys-disk-free
-complete -f  -c cave-sys-disk-free -o -c stack-disk-free -a '(__cave_complete "cave-sys-disk-free" (__cave_arg_pos))'
+complete -f  -c cave-sys-disk-free -c stack-disk-free -k -a '(__cave_complete "cave-sys-disk-free" (__cave_arg_pos))'
 
 # cave-sys-disk-health
-complete -f  -c cave-sys-disk-health -o -c stack-disk-health -a '(__cave_complete "cave-sys-disk-health" (__cave_arg_pos))'
+complete -f  -c cave-sys-disk-health -c stack-disk-health -k -a '(__cave_complete "cave-sys-disk-health" (__cave_arg_pos))'
 
 # cave-sys-firewall-status
-complete -f  -c cave-sys-firewall-status -o -c stack-firewall-status -a '(__cave_complete "cave-sys-firewall-status" (__cave_arg_pos))'
+complete -f  -c cave-sys-firewall-status -c stack-firewall-status -k -a '(__cave_complete "cave-sys-firewall-status" (__cave_arg_pos))'
 
 # cave-sys-flatpak-updates
-complete -f  -c cave-sys-flatpak-updates -o -c stack-flatpak-updates -a '(__cave_complete "cave-sys-flatpak-updates" (__cave_arg_pos))'
+complete -f  -c cave-sys-flatpak-updates -c stack-flatpak-updates -k -a '(__cave_complete "cave-sys-flatpak-updates" (__cave_arg_pos))'
 
 # cave-sys-git-status-all
-complete -f  -c cave-sys-git-status-all -o -c stack-git-status-all -a '(__cave_complete "cave-sys-git-status-all" (__cave_arg_pos))'
+complete -f  -c cave-sys-git-status-all -c stack-git-status-all -k -a '(__cave_complete "cave-sys-git-status-all" (__cave_arg_pos))'
 
 # cave-sys-journal-errors
-complete -f  -c cave-sys-journal-errors -o -c stack-journal-errors -a '(__cave_complete "cave-sys-journal-errors" (__cave_arg_pos))'
+complete -f  -c cave-sys-journal-errors -c stack-journal-errors -k -a '(__cave_complete "cave-sys-journal-errors" (__cave_arg_pos))'
 
 # cave-sys-journal-size
-complete -f  -c cave-sys-journal-size -o -c stack-journal-size -a '(__cave_complete "cave-sys-journal-size" (__cave_arg_pos))'
+complete -f  -c cave-sys-journal-size -c stack-journal-size -k -a '(__cave_complete "cave-sys-journal-size" (__cave_arg_pos))'
 
 # cave-sys-kernel-check
-complete -f  -c cave-sys-kernel-check -o -c stack-kernel-check -a '(__cave_complete "cave-sys-kernel-check" (__cave_arg_pos))'
+complete -f  -c cave-sys-kernel-check -c stack-kernel-check -k -a '(__cave_complete "cave-sys-kernel-check" (__cave_arg_pos))'
 
 # cave-sys-mem-pressure
-complete -f  -c cave-sys-mem-pressure -o -c stack-mem-pressure -a '(__cave_complete "cave-sys-mem-pressure" (__cave_arg_pos))'
+complete -f  -c cave-sys-mem-pressure -c stack-mem-pressure -k -a '(__cave_complete "cave-sys-mem-pressure" (__cave_arg_pos))'
 
 # cave-sys-pkg-clean-cache
-complete -f  -c cave-sys-pkg-clean-cache -o -c stack-pkg-clean-cache -a '(__cave_complete "cave-sys-pkg-clean-cache" (__cave_arg_pos))'
+complete -f  -c cave-sys-pkg-clean-cache -c stack-pkg-clean-cache -k -a '(__cave_complete "cave-sys-pkg-clean-cache" (__cave_arg_pos))'
 
 # cave-sys-pkg-history
-complete -f  -c cave-sys-pkg-history -o -c stack-pkg-history -a '(__cave_complete "cave-sys-pkg-history" (__cave_arg_pos))'
+complete -f  -c cave-sys-pkg-history -c stack-pkg-history -k -a '(__cave_complete "cave-sys-pkg-history" (__cave_arg_pos))'
 
 # cave-sys-pkg-orphans
-complete -f  -c cave-sys-pkg-orphans -o -c stack-pkg-orphans -a '(__cave_complete "cave-sys-pkg-orphans" (__cave_arg_pos))'
+complete -f  -c cave-sys-pkg-orphans -c stack-pkg-orphans -k -a '(__cave_complete "cave-sys-pkg-orphans" (__cave_arg_pos))'
 
 # cave-sys-pkg-update
-complete -f  -c cave-sys-pkg-update -o -c stack-pkg-update -a '(__cave_complete "cave-sys-pkg-update" (__cave_arg_pos))'
+complete -f  -c cave-sys-pkg-update -c stack-pkg-update -k -a '(__cave_complete "cave-sys-pkg-update" (__cave_arg_pos))'
 
 # cave-sys-pkg-updates
-complete -f  -c cave-sys-pkg-updates -o -c stack-pkg-updates -a '(__cave_complete "cave-sys-pkg-updates" (__cave_arg_pos))'
+complete -f  -c cave-sys-pkg-updates -c stack-pkg-updates -k -a '(__cave_complete "cave-sys-pkg-updates" (__cave_arg_pos))'
 
 # cave-sys-reboot-check
-complete -f  -c cave-sys-reboot-check -o -c stack-reboot-check -a '(__cave_complete "cave-sys-reboot-check" (__cave_arg_pos))'
+complete -f  -c cave-sys-reboot-check -c stack-reboot-check -k -a '(__cave_complete "cave-sys-reboot-check" (__cave_arg_pos))'
 
 # cave-sys-service-failed
-complete -f  -c cave-sys-service-failed -o -c stack-service-failed -a '(__cave_complete "cave-sys-service-failed" (__cave_arg_pos))'
+complete -f  -c cave-sys-service-failed -c stack-service-failed -k -a '(__cave_complete "cave-sys-service-failed" (__cave_arg_pos))'
 
 # cave-sys-ssh-doctor
-complete -f  -c cave-sys-ssh-doctor -o -c stack-ssh-doctor -a '(__cave_complete "cave-sys-ssh-doctor" (__cave_arg_pos))'
+complete -f  -c cave-sys-ssh-doctor -c stack-ssh-doctor -k -a '(__cave_complete "cave-sys-ssh-doctor" (__cave_arg_pos))'
 
 # cave-sys-timer-status
-complete -f  -c cave-sys-timer-status -o -c stack-timer-status -a '(__cave_complete "cave-sys-timer-status" (__cave_arg_pos))'
+complete -f  -c cave-sys-timer-status -c stack-timer-status -k -a '(__cave_complete "cave-sys-timer-status" (__cave_arg_pos))'
 
 # cave-sys-uptime-report
-complete -f  -c cave-sys-uptime-report -o -c stack-uptime-report -a '(__cave_complete "cave-sys-uptime-report" (__cave_arg_pos))'
+complete -f  -c cave-sys-uptime-report -c stack-uptime-report -k -a '(__cave_complete "cave-sys-uptime-report" (__cave_arg_pos))'
 
 # cave-sys-zombie-check
-complete -f  -c cave-sys-zombie-check -o -c stack-zombie-check -a '(__cave_complete "cave-sys-zombie-check" (__cave_arg_pos))'
+complete -f  -c cave-sys-zombie-check -c stack-zombie-check -k -a '(__cave_complete "cave-sys-zombie-check" (__cave_arg_pos))'
 
 # cave-tmdb-missing
-complete -f  -c cave-tmdb-missing -o -c stack-tmdb-missing -a '(__cave_complete "cave-tmdb-missing" (__cave_arg_pos))'
+complete -f  -c cave-tmdb-missing -c stack-tmdb-missing -k -a '(__cave_complete "cave-tmdb-missing" (__cave_arg_pos))'
 
 # cave-top
-complete -f  -c cave-top -o -c stack-top -a '(__cave_complete "cave-top" (__cave_arg_pos))'
+complete -f  -c cave-top -c stack-top -k -a '(__cave_complete "cave-top" (__cave_arg_pos))'
 
 # cave-unwatched
-complete -f  -c cave-unwatched -o -c stack-unwatched -a '(__cave_complete "cave-unwatched" (__cave_arg_pos))'
+complete -f  -c cave-unwatched -c stack-unwatched -k -a '(__cave_complete "cave-unwatched" (__cave_arg_pos))'
 
 # cave-version
-complete -f  -c cave-version -o -c stack-version -a '(__cave_complete "cave-version" (__cave_arg_pos))'
+complete -f  -c cave-version -c stack-version -k -a '(__cave_complete "cave-version" (__cave_arg_pos))'
 
 # cave-watchable
-complete -f  -c cave-watchable -o -c stack-watchable -a '(__cave_complete "cave-watchable" (__cave_arg_pos))'
+complete -f  -c cave-watchable -c stack-watchable -k -a '(__cave_complete "cave-watchable" (__cave_arg_pos))'
 
 # cave-worktree
-complete -f  -c cave-worktree -o -c stack-worktree -a '(__cave_complete "cave-worktree" (__cave_arg_pos))'
+complete -f  -c cave-worktree -c stack-worktree -k -a '(__cave_complete "cave-worktree" (__cave_arg_pos))'
 
 
 function __cave_complete --description 'shared positional group completer for cave-* commands'
@@ -470,7 +470,7 @@ function __cave_complete --description 'shared positional group completer for ca
     # Flags (-y|--yes …) match at any position; positional groups by index.
     set -l pos_i 0
     for g in $groups
-        if string match -q '-*' -- $g
+        if string match -q -- '-*' $g
             # flag group: offered at any position
             for alt in (string split '|' -- $g)
                 echo "$alt"

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.5.0...v0.5.1) (2026-09-06)
+
+
+### Bug Fixes
+
+* land Demo-2 fixes, live parity harness, and dotfiles missed by the [#7](https://github.com/WhispersOfJ/Cave-Scripts/issues/7) squash ([#9](https://github.com/WhispersOfJ/Cave-Scripts/issues/9)) ([92470b1](https://github.com/WhispersOfJ/Cave-Scripts/commit/92470b125403bfb69d8b4d12425836b7e75f7ba5))
+
 ## [0.5.0](https://github.com/WhispersOfJ/Cave-Scripts/compare/v0.4.0...v0.5.0) (2026-09-05)
 
 

@@ -347,6 +347,25 @@ else
     log_error "guarded docker() wrapper is missing (loader did not define it)"
 end
 
+# --- Demo-2 regression: __helpers.fish must default the API timeout budgets ---
+# The 2026-09-05 live demo caught fish __helpers.fish missing the
+# `set -q …; or set -gx …` budget defaults: curl then got an empty --max-time
+# and every live API call failed while all offline (mocked) suites stayed
+# green. Assert the defaults exist in a FRESH process with the vars unset.
+log_info "Demo-2 regression: STACK_API_TIMEOUT_* defaults initialized (fresh fish)..."
+set budget_out (env -u STACK_API_TIMEOUT_LIGHT -u STACK_API_TIMEOUT_MUTATE \
+    -u STACK_API_TIMEOUT_HEAVY -u STACK_DOCKER_TIMEOUT fish -N -c "
+    source '$FISH_DIR/functions/__helpers.fish'
+    echo \$STACK_API_TIMEOUT_LIGHT/\$STACK_API_TIMEOUT_MUTATE/\$STACK_API_TIMEOUT_HEAVY/\$STACK_DOCKER_TIMEOUT
+" 2>/dev/null)
+if test "$budget_out" = 10/20/30/5
+    set passed (math $passed + 1)
+    log_success "budget defaults initialize to 10/20/30/5 (got: $budget_out)"
+else
+    set failed (math $failed + 1)
+    log_error "budget defaults wrong (got: '$budget_out', want 10/20/30/5)"
+end
+
 # --- Completions: generated file parses, registers both spellings, no drift ---
 log_info "Completion checks (generated completions parse, register, are current)..."
 set COMP_FILE "$FISH_DIR/completions/cave-completions.fish"
@@ -379,6 +398,21 @@ if bash "$FISH_DIR/scripts/gen-fish-completions.sh" --check >/dev/null 2>&1
 else
     set failed (math $failed + 1)
     log_error "fish completions are out of date — run gen-fish-completions.sh"
+end
+
+# --- Demo-2 regression: the generated completions file must LIVE-SOURCE clean ---
+# fish -n only proves syntax; a bad `complete` flag (e.g. the bash-ism `-o` the
+# generator once emitted) errors at source time on every rule while fish -n
+# still passes. Source it in a throwaway fish and require silence.
+log_info "Demo-2 regression: completions live-source clean (fish, stderr empty)..."
+set live_src_err (fish -N -c "source '$FISH_DIR/completions/cave-completions.fish'" 2>&1 >/dev/null)
+if test $status -eq 0; and test -z "$live_src_err"
+    set passed (math $passed + 1)
+    log_success "completions file sources with no errors in a live fish"
+else
+    set failed (math $failed + 1)
+    log_error "completions file errors when sourced live"
+    echo "$live_src_err" | head -3 | sed 's/^/         /'
 end
 
 log_info "alias drift check (gen-fish-aliases.sh --check)..."

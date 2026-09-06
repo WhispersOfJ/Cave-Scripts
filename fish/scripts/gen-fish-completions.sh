@@ -119,11 +119,10 @@ HDR
         cond=""
         IFS='|' read -ra names <<< "$pair"
         for n in "${names[@]}"; do
-            [ -n "$cond" ] && cond="$cond -o"
             cond="$cond -c $n"
         done
         echo "# $fn"
-        echo "complete -f $cond -a '(__cave_complete \"$fn\" (__cave_arg_pos))'"
+        echo "complete -f $cond -k -a '(__cave_complete \"$fn\" (__cave_arg_pos))'"
         echo ""
     done
 
@@ -154,7 +153,7 @@ function __cave_complete --description 'shared positional group completer for ca
     # Flags (-y|--yes …) match at any position; positional groups by index.
     set -l pos_i 0
     for g in $groups
-        if string match -q '-*' -- $g
+        if string match -q -- '-*' $g
             # flag group: offered at any position
             for alt in (string split '|' -- $g)
                 echo "$alt"

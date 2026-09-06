@@ -1,0 +1,60 @@
+# ============================================================================
+# starship.toml — shared prompt for bash, zsh, and fish (M2 task 7, D22)
+# ============================================================================
+# One prompt, identical look, three shells. Kept deliberately close to the
+# p10k gruvbox look this host ran before the cutover: two-line prompt with
+# right-aligned status, directory + git first-class, language modules off
+# unless the directory actually is one (keeps the prompt fast in ~).
+#
+# Docs: https://starship.rs/config/
+# ============================================================================
+
+# Two-line prompt: info line + input line with a bright ❯.
+# Symbol tuning: green ❯ on success, red ✖❯ on failure (same cue as p10k).
+format = "$username$hostname$directory$git_branch$git_status$cmd_duration$line_break$character"
+
+# Wait ~10ms before redrawing on every keystroke; 30ms scan timeout.
+scan_timeout = 10
+command_timeout = 200
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[✖❯](bold red)"
+
+[directory]
+style = "bold cyan"
+read_only = " 🔒"
+truncation_length = 4
+truncate_to_repo = true
+
+[git_branch]
+symbol = " "
+style = "bold purple"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold red"
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
+
+[cmd_duration]
+min_time = 2000
+format = "[ took $duration](bold yellow)"
+
+[username]
+show_always = false
+format = "[$user]($style)@"
+
+[hostname]
+ssh_only = true
+format = "[$hostname]($style) "
+
+# Modules not relevant to this host stay disabled even in their dirs —
+# cheap prompts stay fast.
+[aws]
+disabled = true
+[gcloud]
+disabled = true
+[kubernetes]
+disabled = true
