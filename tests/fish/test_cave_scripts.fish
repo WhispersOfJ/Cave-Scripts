@@ -116,6 +116,23 @@ for f in "$FUNC_DIR"/cave-*.fish
     end
 end
 set CAVE_CMDS (printf '%s\n' $CAVE_CMDS | sort -u | string match -r '^cave-[a-z0-9-]+$')
+# Legacy-alias surface = commands whose registry family has a stack-* source
+# (media/core/sys). Families born as cave-* (de/backup/btrfs) have no legacy
+# alias and are excluded from count assertions against the alias file.
+set LEGACY_CMDS ()
+for cmd in $CAVE_CMDS
+    set -l family (python3 -c "
+import sys, yaml
+reg = yaml.safe_load(open(sys.argv[2]))
+for f in reg['functions']:
+    if f['name'] == sys.argv[1]:
+        print(f['family'])
+        break
+" "$cmd" "$REGISTRY" 2>/dev/null)
+    if not contains "$family" de backup btrfs
+        set -a LEGACY_CMDS "$cmd"
+    end
+end
 if test (count $CAVE_CMDS) -eq 0
     set failed (math $failed + 1)
     log_error "no cave-* commands found in $FUNC_DIR"
@@ -148,7 +165,7 @@ set reg_rows (python3 -c '
 import sys, yaml
 reg = yaml.safe_load(open(sys.argv[1]))
 for f in reg["functions"]:
-    if f["family"] not in ("de", "backup", "btrfs"):
+    if f["family"] not in ("de", "backup"):
         print(f["name"])
 ' "$REGISTRY")
 for cave_name in $reg_rows
@@ -160,9 +177,64 @@ for cave_name in $reg_rows
 end
 if test "$reg_missing" -eq 0
     set passed (math $passed + 1)
-    log_success "every registry row (non-M3 families) has a cave-* function"
+    log_success "every registry row (non-de/backup families) has a cave-* function"
 else
     set failed (math $failed + $reg_missing)
+end
+
+# --- Btrfs tier (M3): dry-run echo-before-exec, /boot refusal, closed-stdin abort ---
+log_info "Btrfs tier (dry-run echo-before-exec, /boot refusal, closed-stdin abort)..."
+function run_btrfs_rc --argument-names snippet --description "dry-run btrfs probe"
+    set -g BTRFS_OUT (timeout 20 fish -N -c "
+        set -gx STACK_COLOR false
+        set -gx CAVE_BTRFS_DRYRUN 1
+        source '$FISH_DIR/cave-scripts.fish' >/dev/null 2>&1
+        $snippet
+    " </dev/null 2>&1)
+    set -g BTRFS_RC $status
+end
+function run_btrfs_rc_live --argument-names snippet --description "live-confirm btrfs probe"
+    set -g BTRFS_OUT (timeout 20 fish -N -c "
+        set -gx STACK_COLOR false
+        source '$FISH_DIR/cave-scripts.fish' >/dev/null 2>&1
+        $snippet
+    " </dev/null 2>&1)
+    set -g BTRFS_RC $status
+end
+function btrfs_expect --argument-names label actual expected
+    if test "$actual" = "$expected"
+        set -g passed (math $passed + 1)
+        log_success "btrfs: $label"
+    else
+        set -g failed (math $failed + 1)
+        log_error "btrfs: $label (got: $actual)"
+    end
+end
+
+run_btrfs_rc 'cave-btrfs-scrub start --yes'
+btrfs_expect "scrub dry-run echoes exact command" "$BTRFS_OUT" "+ sudo -n btrfs scrub start /"
+
+run_btrfs_rc 'cave-btrfs-balance start --yes'
+btrfs_expect "balance dry-run echoes exact command" "$BTRFS_OUT" "+ sudo -n btrfs balance start -dusage=50 -musage=50 /"
+
+run_btrfs_rc 'cave-btrfs-snapshot create "suite probe"'
+btrfs_expect "snapshot create dry-run echoes exact command" "$BTRFS_OUT" "+ sudo -n snapper -c home create --description suite probe"
+
+run_btrfs_rc_live 'cave-btrfs-scrub start'
+btrfs_expect "scrub aborts on closed stdin" "$BTRFS_OUT" "Start btrfs scrub on / (hours of IO)? [y/N] Aborted."
+
+run_btrfs_rc 'cave-btrfs-subvol create /boot/grub'
+if test "$BTRFS_RC" -eq 1; and string match -q "*Refusing to touch /boot*" -- "$BTRFS_OUT"
+    set -g passed (math $passed + 1); log_success "btrfs: /boot refusal"
+else
+    set -g failed (math $failed + 1); log_error "btrfs: /boot refusal (rc=$BTRFS_RC, out: $BTRFS_OUT)"
+end
+
+run_btrfs_rc 'cave-btrfs-scrub start --yes --turbo'
+if test "$BTRFS_RC" -eq 1; and string match -q "*Unknown option: --turbo*" -- "$BTRFS_OUT"
+    set -g passed (math $passed + 1); log_success "btrfs: scrub rejects unknown options even with --yes"
+else
+    set -g failed (math $failed + 1); log_error "btrfs: scrub unknown-option gate (rc=$BTRFS_RC, out: $BTRFS_OUT)"
 end
 
 # --- Registry conformance: every cave-* def has a registry row (no orphans) ---
@@ -199,9 +271,9 @@ if not test -f "$ALIAS_FILE"
 else
     set alias_bad 0
     set ALIASES (grep -oE '^function stack-[a-z0-9-]+' "$ALIAS_FILE" | sed 's/^function //' | sort -u)
-    if test (count $ALIASES) -ne (count $CAVE_CMDS)
+    if test (count $ALIASES) -ne (count $LEGACY_CMDS)
         set alias_bad (math $alias_bad + 1)
-        log_error "alias count ("(count $ALIASES)") != cave-* count ("(count $CAVE_CMDS)")"
+        log_error "alias count ("(count $ALIASES)") != legacy cave-* count ("(count $LEGACY_CMDS)")"
     end
     for alias_name in $ALIASES
         test -n "$alias_name"; or continue
@@ -509,7 +581,9 @@ for cmd in \
     cave-arr-missing-aired cave-arr-queue-errors cave-arr-recently-added \
     cave-arr-toggle-search cave-container cave-cutoff-unmet cave-disk-reclaim \
     cave-import-lists cave-loop-candidates cave-loop-exclude cave-loop-unmonitor \
-    cave-radarr-prune cave-sonarr-prune cave-worktree
+    cave-radarr-prune cave-sonarr-prune cave-worktree \
+    cave-btrfs-snapshot cave-btrfs-subvol cave-btrfs-scrub \
+    cave-btrfs-balance cave-btrfs-snapper
     if contains "$cmd" $CAVE_CMDS
         run_guard "$cmd"
     end

@@ -227,11 +227,16 @@ functions:
   - {name: cave-btrfs-scrub-status, family: btrfs, safety: read-only}
   - {name: cave-btrfs-balance-status, family: btrfs, safety: read-only}
   - {name: cave-btrfs-qgroup, family: btrfs, safety: read-only}
-  - {name: cave-btrfs-snapshot, family: btrfs, safety: mutating-safe, args: "create | list | delete <name> (M3)"}
-  - {name: cave-btrfs-subvol, family: btrfs, safety: mutating-safe, args: "create (M3)"}
-  - {name: cave-btrfs-scrub, family: btrfs, safety: destructive-confirm, args: "start (--yes + confirm; M3)"}
-  - {name: cave-btrfs-balance, family: btrfs, safety: destructive-confirm, args: "start (--yes + confirm; M3)"}
-  - {name: cave-btrfs-snapper, family: btrfs, safety: read-only, args: "status/diff across root+home configs (M3)"}
+  - {name: cave-btrfs-snapshot, family: btrfs, safety: mutating-safe,
+     args: "list | create <desc> | delete <num> (snapper -c home; confirm + --yes path)"}
+  - {name: cave-btrfs-subvol, family: btrfs, safety: mutating-safe,
+     args: "create <abs-path> (confirm; refuses /boot)"}
+  - {name: cave-btrfs-scrub, family: btrfs, safety: destructive-confirm,
+     args: "start [--yes] (confirm + echo-before-exec; fs root only — no path arg, /boot out of reach)"}
+  - {name: cave-btrfs-balance, family: btrfs, safety: destructive-confirm,
+     args: "start [--yes] (confirm + echo-before-exec; dusage=50/musage=50)"}
+  - {name: cave-btrfs-snapper, family: btrfs, safety: read-only,
+     args: "list | status | diff <root|home> <num>"}
 
 # ─────────────────────────────────────────────────────────────────────────────
 # helpers / internals (not user commands; ported per shell, never registry-asserted

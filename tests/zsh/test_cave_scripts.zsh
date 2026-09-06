@@ -131,6 +131,25 @@ CAVE_CMDS=("${(@f)$(
         grep -oE '^cave-[a-z0-9-]+\(\)' "$f" 2>/dev/null | sed 's/()$//'
     done | sort -u
 )}")
+# Legacy-alias surface = commands whose registry family has a stack-* source
+# (media/core/sys). Families born as cave-* (de/backup/btrfs) have no legacy
+# alias and are excluded from count assertions against the alias file.
+LEGACY_CMDS=("${(@f)$(
+    for cmd in "${CAVE_CMDS[@]}"; do
+        family="$(python3 -c "
+import yaml
+reg = yaml.safe_load(open('$REGISTRY'))
+for f in reg['functions']:
+    if f['name'] == '$cmd':
+        print(f['family'])
+        break
+")"
+        case "$family" in
+            de|backup|btrfs) ;;
+            *) print "$cmd" ;;
+        esac
+    done
+)}")
 if [ "${#CAVE_CMDS[@]}" -eq 0 ]; then
     failed=$((failed + 1))
     log_error "no cave-* commands found in $FUNC_DIR"
@@ -156,14 +175,15 @@ else
 fi
 
 # --- Registry conformance: every row with a zsh impl exists as cave-* ---
-# Rows without a stack-* source yet (de/backup/btrfs, built in M3) are skipped.
+# Rows without an implementation yet (de/backup, built later in M3) are
+# skipped; btrfs landed in M3 and is now enforced like the media families.
 log_info "Registry conformance (spec/functions.yaml rows → cave-* functions)..."
 reg_missing=0
 reg_rows=("${(@f)$(python3 - "$REGISTRY" <<'PY'
 import sys, yaml
 reg = yaml.safe_load(open(sys.argv[1]))
 for f in reg['functions']:
-    if f['family'] not in ('de', 'backup', 'btrfs'):
+    if f['family'] not in ('de', 'backup'):
         print(f['name'])
 PY
 )}")
@@ -222,9 +242,9 @@ if [ ! -f "$ALIAS_FILE" ]; then
 else
     alias_bad=0
     ALIASES=("${(@f)$(grep -oE '^stack-[a-z0-9-]+\(\)' "$ALIAS_FILE" | sed 's/()$//' | sort -u)}")
-    if [ "${#ALIASES[@]}" -ne "${#CAVE_CMDS[@]}" ]; then
+    if [ "${#ALIASES[@]}" -ne "${#LEGACY_CMDS[@]}" ]; then
         alias_bad=$((alias_bad + 1))
-        log_error "alias count (${#ALIASES[@]}) != cave-* count (${#CAVE_CMDS[@]})"
+        log_error "alias count (${#ALIASES[@]}) != legacy cave-* count (${#LEGACY_CMDS[@]})"
     fi
     for alias_name in "${ALIASES[@]}"; do
         [ -n "$alias_name" ] || continue
@@ -521,7 +541,9 @@ for cmd in \
     cave-arr-missing-aired cave-arr-queue-errors cave-arr-recently-added \
     cave-arr-toggle-search cave-container cave-cutoff-unmet cave-disk-reclaim \
     cave-import-lists cave-loop-candidates cave-loop-exclude cave-loop-unmonitor \
-    cave-radarr-prune cave-sonarr-prune cave-worktree; do
+    cave-radarr-prune cave-sonarr-prune cave-worktree \
+    cave-btrfs-snapshot cave-btrfs-subvol cave-btrfs-scrub \
+    cave-btrfs-balance cave-btrfs-snapper; do
     if (( ${CAVE_CMDS[(I)$cmd]} )); then
         run_guard "$cmd"
     fi
@@ -530,6 +552,59 @@ done
 # cave-restart-all prompts for confirmation; with no stdin it must decline.
 if (( ${CAVE_CMDS[(I)cave-restart-all]} )); then
     run_guard cave-restart-all
+fi
+
+# --- Btrfs tier (M3): dry-run echo-before-exec, /boot refusal, closed-stdin abort ---
+log_info "Btrfs tier (dry-run echo-before-exec, /boot refusal, closed-stdin abort)..."
+run_btrfs_rc() { # dry-run variant: sets BTRFS_OUT + BTRFS_RC
+    BTRFS_OUT="$(timeout 20 zsh -f -c "
+        STACK_COLOR=false
+        CAVE_BTRFS_DRYRUN=1
+        source '$ZSH_DIR/cave-scripts.zsh' >/dev/null 2>&1
+        $1
+    " </dev/null 2>&1)" && BTRFS_RC=0 || BTRFS_RC=$?
+}
+run_btrfs_rc_live() { # no DRYRUN: closed stdin drives the confirm path
+    BTRFS_OUT="$(timeout 20 zsh -f -c "
+        STACK_COLOR=false
+        source '$ZSH_DIR/cave-scripts.zsh' >/dev/null 2>&1
+        $1
+    " </dev/null 2>&1)" && BTRFS_RC=0 || BTRFS_RC=$?
+}
+btrfs_expect() { # $1 label, $2 actual, $3 expected
+    if [ "$2" = "$3" ]; then
+        passed=$((passed + 1))
+        log_success "btrfs: $1"
+    else
+        failed=$((failed + 1))
+        log_error "btrfs: $1 (got: $2)"
+    fi
+}
+
+run_btrfs_rc 'cave-btrfs-scrub start --yes'
+btrfs_expect "scrub dry-run echoes exact command" "$BTRFS_OUT" "+ sudo -n btrfs scrub start /"
+
+run_btrfs_rc 'cave-btrfs-balance start --yes'
+btrfs_expect "balance dry-run echoes exact command" "$BTRFS_OUT" "+ sudo -n btrfs balance start -dusage=50 -musage=50 /"
+
+run_btrfs_rc 'cave-btrfs-snapshot create "suite probe"'
+btrfs_expect "snapshot create dry-run echoes exact command" "$BTRFS_OUT" "+ sudo -n snapper -c home create --description suite probe"
+
+run_btrfs_rc_live 'cave-btrfs-scrub start'
+btrfs_expect "scrub aborts on closed stdin" "$BTRFS_OUT" "Start btrfs scrub on / (hours of IO)? [y/N] Aborted."
+
+run_btrfs_rc 'cave-btrfs-subvol create /boot/grub'
+if [ "$BTRFS_RC" -eq 1 ] && printf '%s' "$BTRFS_OUT" | grep -q "Refusing to touch /boot"; then
+    passed=$((passed + 1)); log_success "btrfs: /boot refusal"
+else
+    failed=$((failed + 1)); log_error "btrfs: /boot refusal (rc=$BTRFS_RC, out: $BTRFS_OUT)"
+fi
+
+run_btrfs_rc 'cave-btrfs-scrub start --yes --turbo'
+if [ "$BTRFS_RC" -eq 1 ] && printf '%s' "$BTRFS_OUT" | grep -q "Unknown option: --turbo"; then
+    passed=$((passed + 1)); log_success "btrfs: scrub rejects unknown options even with --yes"
+else
+    failed=$((failed + 1)); log_error "btrfs: scrub unknown-option gate (rc=$BTRFS_RC, out: $BTRFS_OUT)"
 fi
 
 # --- Summary ---

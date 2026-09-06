@@ -78,6 +78,39 @@ complete -f  -c cave-audit-residue -o -c stack-audit-residue -a '(__cave_complet
 # cave-backlog-status
 complete -f  -c cave-backlog-status -o -c stack-backlog-status -a '(__cave_complete "cave-backlog-status" (__cave_arg_pos))'
 
+# cave-btrfs-balance
+complete -f  -c cave-btrfs-balance -a '(__cave_complete "cave-btrfs-balance" (__cave_arg_pos))'
+
+# cave-btrfs-balance-status
+complete -f  -c cave-btrfs-balance-status -a '(__cave_complete "cave-btrfs-balance-status" (__cave_arg_pos))'
+
+# cave-btrfs-device-stats
+complete -f  -c cave-btrfs-device-stats -a '(__cave_complete "cave-btrfs-device-stats" (__cave_arg_pos))'
+
+# cave-btrfs-qgroup
+complete -f  -c cave-btrfs-qgroup -a '(__cave_complete "cave-btrfs-qgroup" (__cave_arg_pos))'
+
+# cave-btrfs-scrub
+complete -f  -c cave-btrfs-scrub -a '(__cave_complete "cave-btrfs-scrub" (__cave_arg_pos))'
+
+# cave-btrfs-scrub-status
+complete -f  -c cave-btrfs-scrub-status -a '(__cave_complete "cave-btrfs-scrub-status" (__cave_arg_pos))'
+
+# cave-btrfs-snapper
+complete -f  -c cave-btrfs-snapper -a '(__cave_complete "cave-btrfs-snapper" (__cave_arg_pos))'
+
+# cave-btrfs-snapshot
+complete -f  -c cave-btrfs-snapshot -a '(__cave_complete "cave-btrfs-snapshot" (__cave_arg_pos))'
+
+# cave-btrfs-subvol
+complete -f  -c cave-btrfs-subvol -a '(__cave_complete "cave-btrfs-subvol" (__cave_arg_pos))'
+
+# cave-btrfs-subvolumes
+complete -f  -c cave-btrfs-subvolumes -a '(__cave_complete "cave-btrfs-subvolumes" (__cave_arg_pos))'
+
+# cave-btrfs-usage
+complete -f  -c cave-btrfs-usage -a '(__cave_complete "cave-btrfs-usage" (__cave_arg_pos))'
+
 # cave-claude-full-backup
 complete -f  -c cave-claude-full-backup -o -c stack-claude-full-backup -a '(__cave_complete "cave-claude-full-backup" (__cave_arg_pos))'
 
