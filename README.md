@@ -68,21 +68,40 @@ Directive groups are positional (group N completes argument N); flag groups
 bash tests/bash/test_cave_scripts.sh --offline   # bash suite (offline merge gate)
 zsh  tests/zsh/test_cave_scripts.zsh             # zsh suite
 fish tests/fish/test_cave_scripts.fish           # fish suite
+tests/live/test_live_parity.sh                   # LIVE 3-shell parity (needs stack up)
 ```
 
-Each suite asserts: every file parses, the full 128-command surface loads,
-every `spec/functions.yaml` row exists (no orphans), the alias layer is
+Each offline suite asserts: every file parses, the full 128-command surface
+loads, every `spec/functions.yaml` row exists (no orphans), the alias layer is
 complete and matches bash, completions are current (no drift), the guarded
 `docker` wrapper is present, and — the parity crown check — `cave-version`,
 `cave-help`, and the mocked API renderers produce **byte-identical output**
 across the bash and fish ports.
 
+The suites also pin the three defects the 2026-09-05 Demo 2 live walkthrough
+caught: fish `__helpers.fish` must default `STACK_API_TIMEOUT_*`, zsh must
+never assign the PATH-tied `path` variable (static + call-chain gates), and
+the fish completions must live-source clean. The live tier
+(`tests/live/test_live_parity.sh`) re-runs the Demo 2 gates — byte-identical
+`cave-help`/`cave-version`/`cave-plex-libraries`/`cave-arr-recently-added`/
+`stack-arr-backlog` output plus identical tab-completion candidates — against
+the real stack in all three shells; it self-skips when the stack is down.
+
 ## Install
 
-Per-shell loaders exist (`bash/cave-scripts.sh`, `zsh/cave-scripts.zsh`,
-`fish/cave-scripts.fish`); the unified dotfiles installer and cutover ship
-in milestone M2/M4. Until then the operational surface remains at
-thebearcave (`services/bash-functions/`).
+```
+dotfiles/install.sh          # wire all three shells + starship (idempotent)
+dotfiles/install.sh --check  # verify wiring only
+```
+
+Installs `starship.toml` into `~/.config/`, copies `.bashrc.inc`/
+`.zshrc.inc`/`config.fish` into `$HOME`, adds a single managed block to
+`~/.bashrc`/`~/.zshrc` (idempotent on re-run), disables the p10k instant
+prompt + `~/.p10k.zsh` source in favor of starship (CachyOS zsh config
+stays), and installs `~/.config/fish/config.fish` (fish had none before).
+Every edited file gets a timestamped `.bak-*` backup. Loaders resolve the
+stack `.env` via `$HOME/cave/.env` (spec §5.4) — the Cave-Scripts submodule
+must be initialized (`git submodule update --init services/cave-scripts`).
 
 ## License
 

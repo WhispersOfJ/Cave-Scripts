@@ -122,9 +122,9 @@ cave-mdblist-import() {
     if [[ "$list_url" =~ ^[0-9]+$ ]]; then
         endpoint="https://api.mdblist.com/api/lists/$list_url?apikey=$mdblist_key"
     elif [[ "$list_url" =~ ^https?://(www\.)?mdblist\.com/lists/[^/?#]+/[^/?#]+ ]]; then
-        local path
-        path="$(echo "$list_url" | sed -E 's|^https?://(www\.)?mdblist\.com/||' | cut -d'?' -f1)"
-        endpoint="https://api.mdblist.com/$path?apikey=$mdblist_key"
+        local api_path
+        api_path="$(echo "$list_url" | sed -E 's|^https?://(www\.)?mdblist\.com/||' | cut -d'?' -f1)"
+        endpoint="https://api.mdblist.com/$api_path?apikey=$mdblist_key"
     else
         fmt_error "Cannot parse list from '$list_url' (use a numeric list id or an mdblist.com/lists/<user>/<slug> URL)"
         return 1

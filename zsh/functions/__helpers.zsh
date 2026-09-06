@@ -43,7 +43,7 @@ __arr_api() {
         echo "Usage: __arr_api <app> <METHOD> <path> [json_body]" >&2
         return 1
     fi
-    local app="$1" method="$2" path="$3" body="${4:-}"
+    local app="$1" method="$2" api_path="$3" body="${4:-}"
     local base_url="" api_key=""
 
     case "$app" in
@@ -72,7 +72,7 @@ __arr_api() {
     if [ -n "$body" ]; then
         opts+=(-H 'Content-Type: application/json' -d "$body")
     fi
-    __stack_curl "$budget" "${opts[@]}" "$base_url$path"
+    __stack_curl "$budget" "${opts[@]}" "$base_url$api_path"
 }
 
 # __arr_api_url <radarr|sonarr|prowlarr>
@@ -129,7 +129,7 @@ __plex_api() {
         echo "Usage: __plex_api <METHOD> <path> [json_body]" >&2
         return 1
     fi
-    local method="$1" path="$2" body="${3:-}"
+    local method="$1" api_path="$2" body="${3:-}"
     local base_url="${PLEX_URL:-http://localhost:32400}"
     local budget="$STACK_API_TIMEOUT_LIGHT"
     case "$method" in
@@ -140,7 +140,7 @@ __plex_api() {
     if [ -n "$body" ]; then
         opts+=(-H 'Content-Type: application/json' -d "$body")
     fi
-    __stack_curl "$budget" "${opts[@]}" "$base_url$path"
+    __stack_curl "$budget" "${opts[@]}" "$base_url$api_path"
 }
 
 # __plex_butler <task-name> — trigger a Plex Maintenance (Butler) task.
@@ -169,7 +169,7 @@ __seerr_api() {
         echo "Usage: __seerr_api <METHOD> <path> [json_body]" >&2
         return 1
     fi
-    local method="$1" path="$2" body="${3:-}"
+    local method="$1" api_path="$2" body="${3:-}"
     local base_url="${SEERR_URL:-http://localhost:5055}"
     if [ -z "$SEERR_API_KEY" ]; then
         echo "SEERR_API_KEY not set" >&2
@@ -185,8 +185,8 @@ __seerr_api() {
     fi
     # normalize slashes on both sides (parity with __seerr_api.fish)
     base_url="${base_url#/}"; base_url="${base_url%/}"
-    path="${path#/}"; path="${path%/}"
-    __stack_curl "$budget" "${opts[@]}" "$base_url/$path"
+    api_path="${api_path#/}"; api_path="${api_path%/}"
+    __stack_curl "$budget" "${opts[@]}" "$base_url/$api_path"
 }
 
 # __nzbdav_api <METHOD> <mode> [extra_params]
